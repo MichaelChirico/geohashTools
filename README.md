@@ -193,4 +193,5 @@ See also
 You might get benefit out of these more interactive online tools for working with geohashes:
 
 -   <http://www.movable-type.co.uk/scripts/geohash.html>
+-   <https://geohash.softeng.co/>
 -   <http://geohash.gofreerange.com/>
