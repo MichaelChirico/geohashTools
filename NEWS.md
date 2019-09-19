@@ -1,5 +1,13 @@
 # `geohashTools` NEWS
 
+## v0.2.4
+
+### BUG FIXES
+
+ 1. CRAN submission again detected memory issues (accessing memory beyond which was declared for an array), reproduced & fixed in [#18](https://github.com/MichaelChirico/geohashTools/pull/18); the original fix also led to an uninitialized access error, [#21](https://github.com/MichaelChirico/geohashTools/issues/21).
+ 
+ 2. CRAN submission also detected a type mismatch error, [#20](https://github.com/MichaelChirico/geohashTools/issues/20).
+
 ## v0.2.2
 
 ### NEW FEATURES
@@ -8,7 +16,7 @@
 
 ### BUG FIXES
 
- 1. CRAN submission detected some memory issues in the C++ code which have now hopefully been fixed in [#12](https://github.com/MichaelChirico/geohashTools/pull/12)
+ 1. CRAN submission detected some memory issues in the C++ code which have now hopefully been fixed in [#12](https://github.com/MichaelChirico/geohashTools/pull/12).
  
  2. `gh_to_spdf` failed with duplicate inputs, [#11](https://github.com/MichaelChirico/geohashTools/issues/11). Duplicates are removed with warning.
  
