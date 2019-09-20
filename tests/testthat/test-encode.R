@@ -24,7 +24,7 @@ test_that('geohash encoder works', {
 
   # geohash cells are _left closed, right open_: [x1, x2) x [y1, y2), see:
   #   http://geohash.org/s000
-  expect_equal(gh_encode(0, 0, 1L), 's')
+  expect_equal(gh_encode(0, 0, 2L), 's0')
 
   # boundary cases
   eps = .Machine$double.eps
