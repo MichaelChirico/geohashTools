@@ -62,12 +62,20 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
-gh_covering = function(SP, precision = 6L, minimal = FALSE) {
-  check_suggested('sp')
-  if (!inherits(SP, 'Spatial'))
+gh_covering = function (SP, precision = 6L, minimal = FALSE)
+{
+  check_suggested("sp")
+  if (sf_input <- inherits(SP, "sf")) {
+    check_suggested("sf")
+    SP = sf::as_Spatial(SP)
+  }
+  if (!inherits(SP, "Spatial"))
     stop("Object to cover must be Spatial (or subclass)")
+  # sp::over behaves poorly with 0-column input
+  if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
+    SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
-  delta = 2*gh_delta(precision)
+  delta = 2 * gh_delta(precision)
   # TODO: actually goes through an encode-decode cycle -- more efficient to
   #   just build the cells directly by rounding to the precision's grid
   gh = with(expand.grid(
@@ -80,9 +88,11 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    return(cover[c(!is.na(sp::over(cover, SP))), ])
-  } else return(cover)
+    cover = cover[!drop(is.na(sp::over(cover, SP))), ]
+  }
+  return(if (sf_input) sf::st_as_sf(cover) else cover)
 }
+
 
 gh_to_sf = function(...) {
   check_suggested('sf')

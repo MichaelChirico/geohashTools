@@ -2,6 +2,10 @@
 
 ## v0.2.5 in development
 
+### NEW FEATURES
+
+ 1. `gh_covering` works with input from `sf`. Thanks to @dshkol for the PR.
+
 ### BUG FIXES
 
  1. `gh_covering` failed on input with missing `proj4string`, [#27](https://github.com/MichaelChirico/geohashTools/issues/27). Thanks @dshkol for the report.

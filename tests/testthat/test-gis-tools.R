@@ -150,3 +150,34 @@ test_that('gh_covering works', {
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
 })
+
+test_that('gh_covering_sf works', {
+  banjarmasin = sf::st_as_sf(sp::SpatialPoints(cbind(
+    c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
+      114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
+    c(-3.3346, -3.2746, -3.2948, -3.3424, -3.3523,
+      -3.3304, -3.3005, -3.3141, -3.326, -3.3552)
+  )))
+
+  # core
+  banjarmasin_cover = gh_covering(banjarmasin)
+  sf::st_crs(banjarmasin) = sf::st_crs("+init=epsg:4326")
+  # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
+  expect_true(!any(is.na(sapply(sf::st_intersects(banjarmasin,banjarmasin_cover),
+                                function(z) if (length(z)==0) NA_integer_ else z[1]))))
+  expect_equal(sort(rownames(banjarmasin_cover))[1:10],
+               c("qx3kzj", "qx3kzm", "qx3kzn", "qx3kzp", "qx3kzq",
+                 "qx3kzr", "qx3kzt", "qx3kzv", "qx3kzw", "qx3kzx"))
+  expect_length(banjarmasin_cover$geometry, 112L)
+
+  # arguments
+  expect_equal(nrow(gh_covering(banjarmasin, 5L)), 9L)
+  banjarmasin_tight = gh_covering(banjarmasin, minimal = TRUE)
+  expect_equal(sort(rownames(banjarmasin_tight))[1:10],
+               c("qx3kzm", "qx3kzx", "qx3mp3", "qx3mpb", "qx3mpu",
+                 "qx3mpz", "qx3mr5", "qx3sbt", "qx3t06", "qx3t22"))
+  expect_equal(nrow(banjarmasin_tight), 10L)
+
+  # errors
+  expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
+})
