@@ -1,5 +1,11 @@
 # `geohashTools` NEWS
 
+## v0.2.5 in development
+
+### BUG FIXES
+
+ 1. `gh_covering` failed on input with missing `proj4string`, [#27](https://github.com/MichaelChirico/geohashTools/issues/27). Thanks @dshkol for the report.
+
 ## v0.2.4
 
 ### BUG FIXES

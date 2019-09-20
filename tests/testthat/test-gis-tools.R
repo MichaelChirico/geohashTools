@@ -124,7 +124,8 @@ test_that('gh_covering works', {
 
   # core
   banjarmasin_cover = gh_covering(banjarmasin)
-  sp::proj4string(banjarmasin) = sp::CRS("+init=epsg:4326")
+  wgs = sp::CRS("+init=epsg:4326")
+  sp::proj4string(banjarmasin) = wgs
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
   expect_true(!any(is.na(sp::over(banjarmasin, banjarmasin_cover))))
   expect_equal(sort(rownames(banjarmasin_cover@data))[1:10],
@@ -139,6 +140,12 @@ test_that('gh_covering works', {
                c("qx3kzm", "qx3kzx", "qx3mp3", "qx3mpb", "qx3mpu",
                  "qx3mpz", "qx3mr5", "qx3sbt", "qx3t06", "qx3t22"))
   expect_length(banjarmasin_tight, 10L)
+  # #27 -- proj4string<- doesn't mutate object, but proj4string() <- does?
+  sp::proj4string(banjarmasin) = NA_character_
+  expect_identical(
+    banjarmasin_tight,
+    sp::`proj4string<-`(gh_covering(banjarmasin, minimal = TRUE), wgs)
+  )
 
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
