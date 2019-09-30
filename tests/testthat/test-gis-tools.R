@@ -1,6 +1,7 @@
 context('GIS tools')
 
 test_that('gh_to_sp works', {
+  skip_if(!requireNamespace('sp'), "sp installation required")
   mauritius = c("mk2u", "mk2e", "mk2g", "mk35", "mk3h",
                 "mk3j", "mk2v", "mk2t", "mk2s")
 
@@ -14,12 +15,7 @@ test_that('gh_to_sp works', {
                         57.3046875, -20.390625, -20.21484375,
                         -20.21484375, -20.390625, -20.390625),
                       nrow = 5L, ncol = 2L))
-  if (!requireNamespace('sp')) {
-    skip("sp installation required for testing CRS equality")
-  } else {
-    expect_equal(ghSP@proj4string,
-                 sp::CRS("+init=epsg:4326"))
-  }
+  expect_equal(ghSP@proj4string, sp::CRS("+init=epsg:4326"))
 
   # duplicate inputs dropped
   expect_warning(ghSP2 <- gh_to_sp(rep(mauritius, 2L)),
@@ -28,6 +24,7 @@ test_that('gh_to_sp works', {
 })
 
 test_that('gh_to_spdf.default works', {
+  skip_if(!requireNamespace('sp'), "sp installation required")
   urumqi = c("tzy3", "tzy0", "tzy2", "tzy8", "tzy9",
              "tzyd", "tzy6", "tzy4", "tzy1")
 
@@ -41,12 +38,8 @@ test_that('gh_to_spdf.default works', {
                         87.890625, 87.5390625, 43.59375, 43.76953125,
                         43.76953125, 43.59375, 43.59375),
                       nrow = 5L, ncol = 2L))
-  if (!requireNamespace('sp')) {
-    skip("sp installation required for testing CRS equality")
-  } else {
-    expect_equal(ghSPDF@proj4string,
-                 sp::CRS("+init=epsg:4326"))
-  }
+  expect_equal(ghSPDF@proj4string, sp::CRS("+init=epsg:4326"))
+
   DF = data.frame(ID = 1:9, row.names = urumqi)
   expect_equal(ghSPDF@data, DF)
   # check also duplicated input (#11)
@@ -56,6 +49,7 @@ test_that('gh_to_spdf.default works', {
 })
 
 test_that('gh_to_spdf.data.frame works', {
+  skip_if(!requireNamespace('sp'), "sp installation required")
   urumqi = c("tzy3", "tzy0", "tzy2", "tzy8", "tzy9",
              "tzyd", "tzy6", "tzy4", "tzy1")
   DF = data.frame(
@@ -72,12 +66,7 @@ test_that('gh_to_spdf.data.frame works', {
                         87.890625, 87.5390625, 43.59375, 43.76953125,
                         43.76953125, 43.59375, 43.59375),
                       nrow = 5L, ncol = 2L))
-  if (!requireNamespace('sp')) {
-    skip("sp installation required for testing CRS equality")
-  } else {
-    expect_equal(ghSPDF@proj4string,
-                 sp::CRS("+init=epsg:4326"))
-  }
+  expect_equal(ghSPDF@proj4string, sp::CRS("+init=epsg:4326"))
   expect_equal(ghSPDF@data, DF)
 
   # duplicated inputs (#11)
@@ -96,6 +85,7 @@ test_that('gh_to_spdf.data.frame works', {
 })
 
 test_that('gh_to_sf works', {
+  skip_if(!requireNamespace('sf'), "sf installation required")
   baku = c("tp5my", "tp5mt", "tp5mw", "tp5mx", "tp5mz",
            "tp5qp", "tp5qn", "tp5qj", "tp5mv")
 
@@ -115,6 +105,7 @@ test_that('gh_to_sf works', {
 })
 
 test_that('gh_covering works', {
+  skip_if(!requireNamespace('sp'), "sp installation required")
   banjarmasin = sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
@@ -152,6 +143,8 @@ test_that('gh_covering works', {
 })
 
 test_that('gh_covering_sf works', {
+  skip_if(!requireNamespace('sp'), "sp installation required")
+  skip_if(!requireNamespace('sf'), "sp installation required")
   banjarmasin = sf::st_as_sf(sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),

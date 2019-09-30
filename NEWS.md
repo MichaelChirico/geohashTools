@@ -1,5 +1,15 @@
 # `geohashTools` NEWS
 
+## v0.3.0
+
+### NEW FEATURES
+
+ 1. Complete overhaul of source code; C++ --> C & changed algorithm
+ 
+### BUG FIXES
+
+ 1. `gh_neighbors` incorrectly returned `NA` for geohashes whose first component is a boundary but whose higher components do indeed have neighbors, [#31](https://github.com/MichaelChirico/geohashTools/issues/31).
+
 ## v0.2.5 in development
 
 ### NEW FEATURES

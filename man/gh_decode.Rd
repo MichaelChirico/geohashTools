@@ -27,8 +27,7 @@ gh_decode(geohashes, include_delta = FALSE, coord_loc = 'c')
   \item{delta_longitude}{ \code{numeric} vector of cell half-widths in the x direction (only included if \code{include_delta} is \code{TRUE} }
 }
 \references{
-  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )\cr
-  \url{https://github.com/hkwi/python-geohash} ( Hiroaki Kawai's original Python implementation )
+  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )
 }
 \author{
   Michael Chirico

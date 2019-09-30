@@ -20,8 +20,7 @@ gh_delta(precision)
   Length-2 \code{numeric} vector; the first element is the \emph{latitude} (y-coordinate) half-width at the input \code{precision}, the second element is the \emph{longitude} (x-coordinate).
 }
 \references{
-  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )\cr
-  \url{https://github.com/hkwi/python-geohash} ( Hiroaki Kawai's original Python implementation )
+  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )
 }
 \author{
   Michael Chirico

@@ -96,8 +96,11 @@ test_that('geohash decoder works', {
   ## empty input
   expect_equal(gh_decode(character(0L)),
                list(latitude = numeric(0L), longitude = numeric(0L)))
+  ## !nzchar input
+  expect_equal(gh_decode(''),
+               list(latitude = NA_real_, longitude = NA_real_))
   ## long input [intr_length > 8 in geohash_decode_impl]
   expect_equal(gh_decode(paste(rep('1', 26L), collapse = '')),
-               list(latitude = -39.1935483870968,
+               list(latitude = -84.1935483870968,
                     longitude = -133.548387117729))
 })
