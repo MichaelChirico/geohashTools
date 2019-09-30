@@ -57,7 +57,6 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
 
     xp[i]=-180.0, yp[i]=-90.0;
 
-    int offsetx, offsety;
     union {
       double d;
       uint64_t i64;
@@ -65,31 +64,18 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
     deltax.d = 360.0;
     deltay.d = 180.0;
 
-    for (int p=0; p<k; p++) {
-      unsigned char ghip = (unsigned char)ghi[p];
-      if (check_range(&ghip)) error("Non-ASCII character at index %d. If this is surprising, use charToRaw('%s') and look for values outside 00-7f", i+1, ghi);
-      int O4=offset4[ghip];
-      if (O4 == NA_INTEGER) {
+    for (int p=0; p<k; p+=2) {
+      int idx0 = char_idx(&ghi[p]),
+          idx1 = p+1==k ? 0 : char_idx(&ghi[p+1]);
+      if (idx0 == NA_INTEGER || idx1 == NA_INTEGER) {
         UNPROTECT(nprotect);
         error("Invalid geohash; check '%s' at index %d.\nValid characters: [0123456789bcdefghjkmnpqrstuvwxyz]", ghi, i+1);
       }
-      int O8=offset8[ghip];
-      if (p % 2) { // even in 1-indexed gh precision
-        offsetx = O4;
-        offsety = O8;
+      deltax.i64-=mult32;
+      deltay.i64-=mult32;
 
-        deltax.i64-=mult4;
-        deltay.i64-=mult8;
-      } else { // odd in 1-indexed gh precision
-        offsetx = O8;
-        offsety = O4;
-
-        deltax.i64-=mult8;
-        deltay.i64-=mult4;
-      }
-
-      xp[i]+=offsetx*deltax.d;
-      yp[i]+=offsety*deltay.d;
+      xp[i]+=offset[idx0][idx1][0]*deltax.d;
+      yp[i]+=offset[idx0][idx1][1]*deltay.d;
     }
     // now apply final offset
     xp[i]+=centeroffx[coord_loc]*deltax.d/2;
@@ -98,7 +84,6 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
       dyp[i] = deltay.d/2;
       dxp[i] = deltax.d/2;
     }
-
   }
 
   UNPROTECT(nprotect);

@@ -127,29 +127,20 @@ SEXP gh_neighbors(SEXP gh, SEXP self_arg) {
     // initialize compx 1 so that we can always subtract 1 (left-hand boundary
     //   wraps around the international date line)
     uint64_t compx=1, compy=0, nbx, nby; // comp->component, nb->neighbor
-    for (int p=0; p<k; p++){
-      unsigned char ghip = (unsigned char)ghi[p];
-      int O4=offset4[ghip];
-      if (O4 == NA_INTEGER) {
+    for (int p=0; p<k; p+=2){
+      int idx0 = char_idx(&ghi[p]),
+          idx1 = p+1==k ? 0 : char_idx(&ghi[p+1]);
+      if (idx0 == NA_INTEGER || idx1 == NA_INTEGER) {
         UNPROTECT(nprotect);
         error("Invalid geohash; check '%s' at index %d.\nValid characters: [0123456789bcdefghjkmnpqrstuvwxyz]", ghi, i+1);
       }
-      int O8=offset8[ghip];
-      if (p % 2) { // even in 1-indexed gh precision
-        compx <<= 2;
-        compy <<= 3;
 
-        compx += O4;
-        compy += O8;
-        is_northern = is_northern && (O8==7);
-      } else { // odd in 1-indexed gh precision
-        compx <<= 3;
-        compy <<= 2;
+      compx <<= 5;
+      compy <<= 5;
 
-        compx += O8;
-        compy += O4;
-        is_northern = is_northern && (O4==3);
-      }
+      compx += offset[idx0][idx1][0];
+      compy += offset[idx0][idx1][1];
+      is_northern = is_northern && (offset[idx0][idx1][1]==31);
     }
     // also tried: double loop to try and save double-calculating
     //   nby all 3 times, but conflicts with manipulating it in
