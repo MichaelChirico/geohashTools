@@ -8,9 +8,9 @@
  
 ### BUG FIXES
 
- 1. `gh_neighbors` incorrectly returned `NA` for geohashes whose first component is a boundary but whose higher components do indeed have neighbors, [#31](https://github.com/MichaelChirico/geohashTools/issues/31).
+ 1. `gh_neighbors` incorrectly returned `NA` for geohashes whose first component is a boundary but whose higher components do indeed have neighbors, [#14](https://github.com/MichaelChirico/geohashTools/issues/14).
 
-## v0.2.5 in development
+## v0.2.5
 
 ### NEW FEATURES
 
@@ -18,28 +18,28 @@
 
 ### BUG FIXES
 
- 1. `gh_covering` failed on input with missing `proj4string`, [#27](https://github.com/MichaelChirico/geohashTools/issues/27). Thanks @dshkol for the report.
+ 1. `gh_covering` failed on input with missing `proj4string`, [#13](https://github.com/MichaelChirico/geohashTools/issues/13). Thanks @dshkol for the report.
 
 ## v0.2.4
 
 ### BUG FIXES
 
- 1. CRAN submission again detected memory issues (accessing memory beyond which was declared for an array), reproduced & fixed in [#18](https://github.com/MichaelChirico/geohashTools/pull/18); the original fix also led to an uninitialized access error, [#21](https://github.com/MichaelChirico/geohashTools/issues/21).
+ 1. CRAN submission again detected memory issues (accessing memory beyond which was declared for an array), reproduced & fixed for [#6](https://github.com/MichaelChirico/geohashTools/issues/6); the original fix also led to an uninitialized access error, [#12](https://github.com/MichaelChirico/geohashTools/issues/12).
  
- 2. CRAN submission also detected a type mismatch error, [#20](https://github.com/MichaelChirico/geohashTools/issues/20).
+ 2. CRAN submission also detected a type mismatch error, [#11](https://github.com/MichaelChirico/geohashTools/issues/11).
 
 ## v0.2.2
 
 ### NEW FEATURES
 
- 1. `gh_covering` for generating a covering of an input polygon in geohashes, [#7](https://github.com/MichaelChirico/geohashTools/issues/7).
+ 1. `gh_covering` for generating a covering of an input polygon in geohashes, [#4](https://github.com/MichaelChirico/geohashTools/issues/4).
 
 ### BUG FIXES
 
- 1. CRAN submission detected some memory issues in the C++ code which have now hopefully been fixed in [#12](https://github.com/MichaelChirico/geohashTools/pull/12).
+ 1. CRAN submission detected some memory issues in the C++ code which have now hopefully been fixed for [#6](https://github.com/MichaelChirico/geohashTools/issues/6).
  
- 2. `gh_to_spdf` failed with duplicate inputs, [#11](https://github.com/MichaelChirico/geohashTools/issues/11). Duplicates are removed with warning.
+ 2. `gh_to_spdf` failed with duplicate inputs, [#8](https://github.com/MichaelChirico/geohashTools/issues/8). Duplicates are removed with warning.
  
- 3. `gh_neighbors('')` failed, [#16](https://github.com/MichaelChirico/geohashTools/issues/16).
+ 3. `gh_neighbors('')` failed, [#9](https://github.com/MichaelChirico/geohashTools/issues/9).
 
 # Updates only tracked here since v0.2.2
