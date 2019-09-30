@@ -7,6 +7,9 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg);
 SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc);
 SEXP gh_neighbors(SEXP gh, SEXP self_arg);
 
+// utils.c
+int check_range(unsigned char * ch);
+
 // ** FOR ENCODING **
 // NB geohash orientation rotates from Z order (odd) to N order (even)
 static const char map[4][9] = {

@@ -103,4 +103,8 @@ test_that('geohash decoder works', {
   expect_equal(gh_decode(paste(rep('1', 26L), collapse = '')),
                list(latitude = -84.1935483870968,
                     longitude = -133.548387117729))
+
+  ## non-ASCII input #19
+  expect_error(gh_decode(rawToChar(as.raw(128))), fixed = TRUE,
+               'Non-ASCII character at index 1')
 })

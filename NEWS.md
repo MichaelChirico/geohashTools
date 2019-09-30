@@ -1,5 +1,11 @@
 # `geohashTools` NEWS
 
+## v0.3.1
+
+### BUG FIXES
+
+ 1. `gh_decode` errors early on non-ASCII input to prevent out-of-memory access, [#19](https://github.com/MichaelChirico/geohashTools/issues/19).
+
 ## v0.3.0
 
 ### NEW FEATURES

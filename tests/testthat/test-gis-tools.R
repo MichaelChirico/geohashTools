@@ -42,7 +42,7 @@ test_that('gh_to_spdf.default works', {
 
   DF = data.frame(ID = 1:9, row.names = urumqi)
   expect_equal(ghSPDF@data, DF)
-  # check also duplicated input (#11)
+  # check also duplicated input (#8)
   expect_warning(ghSPDF2 <- gh_to_spdf(rep(urumqi, 2L)),
                  'Detected 9 duplicate input geohashes; removing', fixed = TRUE)
   expect_equal(ghSPDF2@data, DF)
@@ -69,7 +69,7 @@ test_that('gh_to_spdf.data.frame works', {
   expect_equal(ghSPDF@proj4string, sp::CRS("+init=epsg:4326"))
   expect_equal(ghSPDF@data, DF)
 
-  # duplicated inputs (#11)
+  # duplicated inputs (#8)
   expect_warning(ghSPDF2 <- gh_to_spdf(rbind(DF, DF)),
                  'Detected 9 duplicate input geohashes; removing', fixed = TRUE)
   expect_equal(ghSPDF2@data, DF)
@@ -131,7 +131,7 @@ test_that('gh_covering works', {
                c("qx3kzm", "qx3kzx", "qx3mp3", "qx3mpb", "qx3mpu",
                  "qx3mpz", "qx3mr5", "qx3sbt", "qx3t06", "qx3t22"))
   expect_length(banjarmasin_tight, 10L)
-  # #27 -- proj4string<- doesn't mutate object, but proj4string() <- does?
+  # #13 -- proj4string<- doesn't mutate object, but proj4string() <- does?
   sp::proj4string(banjarmasin) = NA_character_
   expect_identical(
     banjarmasin_tight,
