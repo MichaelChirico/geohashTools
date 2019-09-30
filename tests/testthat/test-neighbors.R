@@ -31,7 +31,7 @@ test_that('geohash adjacency list works', {
 
   # global boundary geohashes
   #   include a northern geohash whose top-level parent has no neighbor but
-  #   which has a neighbor at that precision, #31
+  #   which has a neighbor at that precision, #14
   expect_equal(gh_neighbors(c('5', 'u', 'pv', 'zry', 'z0'), self = FALSE),
                list(southwest = c(NA, "e", "ps", "zrt", "wz"),
                     south = c(NA, "s", "pu", "zrw", "xp"),
