@@ -131,7 +131,6 @@ SEXP gh_neighbors(SEXP gh, SEXP self_arg) {
       unsigned char ghip = (unsigned char)ghi[p];
       int O4=offset4[ghip];
       if (O4 == NA_INTEGER) {
-        UNPROTECT(nprotect);
         error("Invalid geohash; check '%s' at index %d.\nValid characters: [0123456789bcdefghjkmnpqrstuvwxyz]", ghi, i+1);
       }
       int O8=offset8[ghip];
