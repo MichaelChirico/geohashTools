@@ -7,8 +7,6 @@ dist: trusty
 sudo: required
 cache: packages
 warnings_are_errors: true
-# empty r_check_args to turn off --as-cran (on by default) as that can be slow
-r_check_args: ""
 
 # for sf -> units, proj, geos, gdal dependencies
 addons:
