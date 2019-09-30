@@ -17,7 +17,7 @@ projected into latitude/longitude space) and nesting this process
 recursively.
 
 Originally, we adapted C++ source from [Hiroaki
-Kawai](https://github.com/hkwi), but have no rewritten the
+Kawai](https://github.com/hkwi), but have now rewritten the
 implementation completely with a new approach in C.
 
 ## Encoding geohashes
