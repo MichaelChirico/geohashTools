@@ -68,7 +68,6 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
       int idx0 = char_idx(&ghi[p]),
           idx1 = p+1==k ? 0 : char_idx(&ghi[p+1]);
       if (idx0 == NA_INTEGER || idx1 == NA_INTEGER) {
-        UNPROTECT(nprotect);
         error("Invalid geohash; check '%s' at index %d.\nValid characters: [0123456789bcdefghjkmnpqrstuvwxyz]", ghi, i+1);
       }
       deltax.i64-=mult32;

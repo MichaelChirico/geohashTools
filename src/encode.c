@@ -42,7 +42,6 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg) {
       continue;
     }
     if (yp[i] >= 90 || yp[i] < -90) {
-      UNPROTECT(nprotect);
       error("Invalid latitude at index %d; must be in [-90, 90)", i + 1);
     }
     // re-scale lat/lon space into [0,1]^2
