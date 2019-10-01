@@ -134,12 +134,23 @@ SEXP gh_neighbors(SEXP gh, SEXP self_arg) {
         error("Invalid geohash; check '%s' at index %d.\nValid characters: [0123456789bcdefghjkmnpqrstuvwxyz]", ghi, i+1);
       }
 
-      compx <<= 5;
-      compy <<= 5;
+      if (p+1==k) {
+        compx <<= 3;
+        compy <<= 2;
 
-      compx += offset[idx0][idx1][0];
-      compy += offset[idx0][idx1][1];
-      is_northern = is_northern && (offset[idx0][idx1][1]==31);
+        compx += offset[idx0][idx1][0]>>2;
+        compy += offset[idx0][idx1][1]>>3;
+
+        is_northern = is_northern && (offset[idx0][idx1][1]>=28); // first three bits set --> >=28
+      } else {
+        compx <<= 5;
+        compy <<= 5;
+
+        compx += offset[idx0][idx1][0];
+        compy += offset[idx0][idx1][1];
+
+        is_northern = is_northern && (offset[idx0][idx1][1]==31);
+      }
     }
     // also tried: double loop to try and save double-calculating
     //   nby all 3 times, but conflicts with manipulating it in
