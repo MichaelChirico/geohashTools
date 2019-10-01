@@ -73,15 +73,23 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
       deltax.i64-=mult32;
       deltay.i64-=mult32;
 
+      //Rprintf("idx0: %d, idx1: %d, x offset: %d, y offset: %d\n", idx0, idx1, offset[idx0][idx1][0], offset[idx0][idx1][1]);
       xp[i]+=offset[idx0][idx1][0]*deltax.d;
       yp[i]+=offset[idx0][idx1][1]*deltay.d;
     }
-    // now apply final offset
-    xp[i]+=centeroffx[coord_loc]*deltax.d/2;
-    yp[i]+=centeroffy[coord_loc]*deltay.d/2;
+    // now apply final offset (value depends on parity of precision)
+    if (k % 2) {
+      deltax.i64+=mult2;
+      deltay.i64+=mult4;
+    } else {
+      deltax.i64-=mult2;
+      deltay.i64-=mult2;
+    }
+    xp[i]+=centeroffx[coord_loc]*deltax.d;
+    yp[i]+=centeroffy[coord_loc]*deltay.d;
     if (include_delta) {
-      dyp[i] = deltay.d/2;
-      dxp[i] = deltax.d/2;
+      dyp[i] = deltay.d;
+      dxp[i] = deltax.d;
     }
   }
 

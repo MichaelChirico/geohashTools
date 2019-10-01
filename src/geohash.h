@@ -20,6 +20,7 @@ static const char map[4][9] = {
 };
 
 // increase the exponent by 2 or 3 (multiply by 4 or 8) in IEEE 754 representation
+static const uint64_t mult2  = 1ULL << 52;
 static const uint64_t mult4  = 2ULL << 52;
 static const uint64_t mult8  = 3ULL << 52;
 static const uint64_t mult32 = 5ULL << 52;

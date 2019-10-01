@@ -81,6 +81,9 @@ test_that('geohash decoder works', {
                "Invalid geohash; check 'a' at index 1.")
   expect_error(gh_decode(c('b', 'a')), fixed = TRUE,
                "Invalid geohash; check 'a' at index 2.")
+  ## non-ASCII input #19
+  expect_error(gh_decode(rawToChar(as.raw(128))), useBytes = TRUE,
+               "Invalid geohash; check.*index 1")
 
   # missing input
   expect_equal(gh_decode(c(neum, NA_character_)),
@@ -104,7 +107,5 @@ test_that('geohash decoder works', {
                list(latitude = -84.1935483870968,
                     longitude = -133.548387117729))
 
-  ## non-ASCII input #19
-  expect_error(gh_decode(rawToChar(as.raw(128))), fixed = TRUE,
-               'Non-ASCII character at index 1')
+
 })
