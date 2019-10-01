@@ -73,7 +73,6 @@ SEXP gh_decode(SEXP gh, SEXP include_delta_arg, SEXP coord_loc_arg) {
       deltax.i64-=mult32;
       deltay.i64-=mult32;
 
-      //Rprintf("idx0: %d, idx1: %d, x offset: %d, y offset: %d\n", idx0, idx1, offset[idx0][idx1][0], offset[idx0][idx1][1]);
       xp[i]+=offset[idx0][idx1][0]*deltax.d;
       yp[i]+=offset[idx0][idx1][1]*deltay.d;
     }

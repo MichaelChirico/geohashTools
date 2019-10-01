@@ -141,7 +141,7 @@ SEXP gh_neighbors(SEXP gh, SEXP self_arg) {
         compx += offset[idx0][idx1][0]>>2;
         compy += offset[idx0][idx1][1]>>3;
 
-        is_northern = is_northern && (offset[idx0][idx1][1]>=28); // first three bits set --> >=28
+        is_northern = is_northern && (offset[idx0][idx1][1]==24); // first two bits set & forced 0 --> 24
       } else {
         compx <<= 5;
         compy <<= 5;
