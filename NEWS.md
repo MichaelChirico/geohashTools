@@ -6,6 +6,10 @@
 
  1. `gh_decode` errors early on non-ASCII input to prevent out-of-memory access, [#19](https://github.com/MichaelChirico/geohashTools/issues/19).
 
+### NOTES
+
+ 1. Removed `mockery` from Suggests. It may later be restored, but currently it's not used.
+
 ## v0.3.0
 
 ### NEW FEATURES
