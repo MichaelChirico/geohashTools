@@ -154,10 +154,11 @@ test_that('gh_covering_sf works', {
 
   # core
   banjarmasin_cover = gh_covering(banjarmasin)
-  sf::st_crs(banjarmasin) = sf::st_crs("+init=epsg:4326")
+  sf::st_crs(banjarmasin) = sf::st_crs(4326L)
+  banjarmasin = sf::st_transform(banjarmasin, sf::st_crs(banjarmasin_cover))
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
   expect_true(!any(is.na(sapply(sf::st_intersects(banjarmasin,banjarmasin_cover),
-                                function(z) if (length(z)==0) NA_integer_ else z[1]))))
+                                function(z) if (length(z)==0L) NA_integer_ else z[1L]))))
   expect_equal(sort(rownames(banjarmasin_cover))[1:10],
                c("qx3kzj", "qx3kzm", "qx3kzn", "qx3kzp", "qx3kzq",
                  "qx3kzr", "qx3kzt", "qx3kzv", "qx3kzw", "qx3kzx"))
