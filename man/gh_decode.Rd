@@ -11,12 +11,14 @@
 gh_decode(geohashes, include_delta = FALSE, coord_loc = 'c')
 }
 \arguments{
-  \item{geohashes}{ \code{character} vector of input geohashes. There's no need for all inputs to be of the same precision. }
+  \item{geohashes}{ \code{character} or \code{factor} vector or of input geohashes. There's no need for all inputs to be of the same precision. }
   \item{include_delta}{ \code{logical}; should the cell half-width delta be included in the output? }
   \item{coord_loc}{ \code{character} specifying where in the cell points should be mapped to; cell centroid is mapped by default; case-insensitive. See Details. }
 }
 \details{
   \code{coord_loc} can be the cell's center (\code{'c'} or \code{'centroid'}), or it can be any of the 8 corners (e.g. \code{'s'}/\code{'south'} for the midpoint of the southern boundary of the cell, or \code{'ne'}/\code{'northeast'} for the upper-right corner.
+
+  For \code{factor} input, decoding will be done on the levels for efficiency.
 }
 \value{
   \code{list} with the following entries:

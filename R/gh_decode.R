@@ -1,4 +1,8 @@
 gh_decode = function(geohashes, include_delta = FALSE, coord_loc = 'c') {
+  if (is.factor(geohashes)) {
+    return(lapply(gh_decode(levels(geohashes), include_delta, coord_loc),
+                  function(z) z[geohashes]))
+  }
   if (length(coord_loc) > 1L)
     stop("Please provide only one value for 'coord_loc'")
   coord_loc = switch(

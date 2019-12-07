@@ -2,6 +2,10 @@
 
 ## v0.3.1
 
+### NEW FEATURES
+
+ 1. `gh_decode` accepts and efficiently processes `factor` input by only decoding each level one time, [#17](https://github.com/MichaelChirico/geohashTools/issues/17). If you're likely to have a fair number of duplicate geohashes in your input, consider storing them as a factor or running `gh_decode(as.factor(x))` for efficiency.
+
 ### BUG FIXES
 
  1. `gh_decode` errors early on non-ASCII input to prevent out-of-memory access, [#19](https://github.com/MichaelChirico/geohashTools/issues/19).

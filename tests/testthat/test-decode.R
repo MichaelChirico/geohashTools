@@ -18,6 +18,10 @@ test_that('geohash decoder works', {
                list(latitude = c(-7.60528564453125, 42.91259765625),
                     longitude = c(110.198364257812, 17.60009765625)))
 
+  # input is factor, #17
+  x = gl(4L, 20L, labels = c(borobudur, akarenga, kalakuta, neum))
+  expect_equal(gh_decode(x), gh_decode(as.character(x)))
+
   # option: include_delta
   expect_equal(gh_decode(borobudur, include_delta = TRUE),
                list(latitude = -7.60528564453125,
