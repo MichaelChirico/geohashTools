@@ -50,8 +50,12 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg) {
     //   So I eschew trying to get maximally precise answers (e.g.
     //   at .Machine$double.eps levels); roughly 100*.Machine$double.eps
     //   already seems to do fine
-    if (xp[i] >= 180 || xp[i] < -180) {
+    if (xp[i] >= 180) {
       zx.d = fmod(xp[i] + 180.0, 360.0)/360.0;
+    } else if (xp[i] < -180) {
+      // #27 -- x % 360 isn't forced positive for x in (-360, 0);
+      //   there's a better way to do this, but I'm too tired
+      zx.d = 1+fmod(xp[i] + 180.0, 360.0)/360.0;;
     } else {
       zx.d = xp[i]/360.0+0.5;
     }

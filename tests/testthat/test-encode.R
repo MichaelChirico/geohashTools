@@ -6,6 +6,9 @@ test_that('geohash encoder works', {
   expect_equal(gh_encode(y, x), 's0h09n')
   expect_equal(gh_encode(-y, -x), '7zgzqc')
 
+  # longitude wraps around every 360 degrees
+  expect_equal(gh_encode(y, x), gh_encode(y, x-360))
+
   # all level-1 centroids to be sure my manual logic for precision = 1 works
   expect_equal(gh_encode(c(-67.5, -67.5, -22.5, -22.5, -67.5, -67.5, -22.5,
                            -22.5, 22.5, 22.5, 67.5, 67.5, 22.5, 22.5, 67.5,
