@@ -15,7 +15,8 @@ test_that('gh_to_sp works', {
                         57.3046875, -20.390625, -20.21484375,
                         -20.21484375, -20.390625, -20.390625),
                       nrow = 5L, ncol = 2L))
-  expect_equal(ghSP@proj4string, sp::CRS("+init=epsg:4326"))
+  wgs = sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
+  expect_equal(ghSP@proj4string, wgs)
 
   # duplicate inputs dropped
   expect_warning(ghSP2 <- gh_to_sp(rep(mauritius, 2L)),
@@ -38,7 +39,8 @@ test_that('gh_to_spdf.default works', {
                         87.890625, 87.5390625, 43.59375, 43.76953125,
                         43.76953125, 43.59375, 43.59375),
                       nrow = 5L, ncol = 2L))
-  expect_equal(ghSPDF@proj4string, sp::CRS("+init=epsg:4326"))
+  wgs = sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
+  expect_equal(ghSPDF@proj4string, wgs)
 
   DF = data.frame(ID = 1:9, row.names = urumqi)
   expect_equal(ghSPDF@data, DF)
@@ -66,7 +68,8 @@ test_that('gh_to_spdf.data.frame works', {
                         87.890625, 87.5390625, 43.59375, 43.76953125,
                         43.76953125, 43.59375, 43.59375),
                       nrow = 5L, ncol = 2L))
-  expect_equal(ghSPDF@proj4string, sp::CRS("+init=epsg:4326"))
+  wgs = sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
+  expect_equal(ghSPDF@proj4string, wgs)
   expect_equal(ghSPDF@data, DF)
 
   # duplicated inputs (#8)
