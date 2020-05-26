@@ -10,7 +10,7 @@
 
  1. `gh_decode` errors early on non-ASCII input to prevent out-of-memory access, [#19](https://github.com/MichaelChirico/geohashTools/issues/19).
  
- 2. Dependency upgrade of `r-spatial` to PROJ 6 revealed a test failure in `geohashTools` that has now been corrected, [#23](https://github.com/MichaelChirico/geohashTools/issues/23). Thanks @rsbivand for his diligence and proactivity in identifying the failure and to @Nowosad for providing helpful Docker images for testing.
+ 2. Dependency upgrade of `r-spatial` to PROJ 6 revealed a test failure in `geohashTools` that has now been corrected, [#23](https://github.com/MichaelChirico/geohashTools/issues/23). Thanks @rsbivand for his diligence and proactivity in identifying the failure, to @Nowosad for providing helpful Docker images for testing, and @mdsumner for helpful comments.
  
  3. Input with longitude< -180 (which should be wrapped again around the Earth) was calculated incorrectly, [#27](https://github.com/MichaelChirico/geohashTools/issues/27).
 
