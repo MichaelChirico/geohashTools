@@ -109,6 +109,7 @@ test_that('gh_to_sf works', {
 
 test_that('gh_covering works', {
   skip_if(!requireNamespace('sp'), "sp installation required")
+  skip_if(!requireNamespace('rgdal'), "rgdal installation required")
   banjarmasin = sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
@@ -150,6 +151,7 @@ test_that('gh_covering works', {
 test_that('gh_covering_sf works', {
   skip_if(!requireNamespace('sp'), "sp installation required")
   skip_if(!requireNamespace('sf'), "sp installation required")
+  skip_if(!requireNamespace('rgdal'), "rgdal installation required")
   banjarmasin = sf::st_as_sf(sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
