@@ -1,5 +1,5 @@
 # https://epsg.io/4326
-wgs = as(sf::st_crs(4326L), 'CRS')
+wgs = sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
 
 # nocov start
 check_suggested = function(pkg) {

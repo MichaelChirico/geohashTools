@@ -115,7 +115,7 @@ test_that('gh_covering works', {
 
   # core
   banjarmasin_cover = gh_covering(banjarmasin)
-  wgs = as(sf::st_crs(4326L), 'CRS')
+  wgs = sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
   sp::proj4string(banjarmasin) = wgs
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
   expect_true(!any(is.na(sp::over(banjarmasin, banjarmasin_cover))))
