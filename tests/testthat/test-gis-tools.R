@@ -139,10 +139,7 @@ test_that('gh_covering works', {
   sp::proj4string(banjarmasin) = NA_character_
   banjarmasin_cover = gh_covering(banjarmasin, minimal = TRUE)
   sp::proj4string(banjarmasin_cover) = wgs
-  expect_true(sp::identicalCRS(banjarmasin_tight, banjarmasin_cover))
-  banjarmasin_cover = sp::spTransform(banjarmasin_cover, sp::proj4string(banjarmasin_tight))
-  banjarmasin_tight = sp::spTransform(banjarmasin_tight, sp::proj4string(banjarmasin_tight))
-  expect_identical(banjarmasin_tight, banjarmasin_cover)
+  expect_equivalent(banjarmasin_cover, banjarmasin_tight)
 
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
