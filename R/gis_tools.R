@@ -1,5 +1,5 @@
 # https://epsg.io/4326
-wgs = as(sf::st_as_sf(obj, coords = c("lon", "lat"), crs = 4326L), "Spatial")
+wgs = as(sf::st_crs(4326L), 'CRS')
 
 # nocov start
 check_suggested = function(pkg) {
