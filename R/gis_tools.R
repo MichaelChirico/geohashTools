@@ -1,5 +1,5 @@
 # https://epsg.io/4326
-wgs = function() sp::CRS('+init=epsg:4326')
+wgs = as(sf::st_as_sf(obj, coords = c("lon", "lat"), crs = 4326L), "Spatial")
 
 # nocov start
 check_suggested = function(pkg) {
@@ -26,7 +26,7 @@ gh_to_sp = function(geohashes) {
       latitude[ii] + c(-1, 1, 1, -1, -1) * delta_latitude[ii]
     ))), ID = gh[ii]))
     # gh_decode returns values in WSG 84
-  }), proj4string = wgs())
+  }), proj4string = wgs)
 }
 
 gh_to_spdf = function(...) {
@@ -82,7 +82,7 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
     latitude = seq(bb[2L, 'min'], bb[2L, 'max'] + delta[1L], by = delta[1L]),
     longitude = seq(bb[1L, 'min'], bb[1L, 'max'] + delta[2L], by = delta[2L])
   ), gh_encode(latitude, longitude, precision))
-  if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs())
+  if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs)
   cover = sp::spTransform(gh_to_spdf(gh), prj4)
   if (minimal) {
     # slightly more efficient to use rgeos, but there's a bug preventing

@@ -9,4 +9,4 @@ Depends: R (>= 3.0.0)
 Description: Tools for working with Gustavo Niemeyer's geohash coordinate system, including API for interacting with other common R GIS libraries.
 URL: https://github.com/MichaelChirico/geohashTools
 License: MPL-2.0 | file LICENSE
-Suggests: rgdal, sf, sp, testthat
+Suggests: sf, sp, testthat
