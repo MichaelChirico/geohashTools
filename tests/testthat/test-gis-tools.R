@@ -136,9 +136,12 @@ test_that('gh_covering works', {
   expect_length(banjarmasin_tight, 10L)
   # #13 -- proj4string<- doesn't mutate object, but proj4string() <- does?
   sp::proj4string(banjarmasin) = NA_character_
-  banjarmasin_covering = gh_covering(banjarmasin, minimal = TRUE)
-  sp::proj4string(banjarmasin_covering) = wgs
-  expect_identical(banjarmasin_tight, banjarmasin_covering)
+  banjarmasin_cover = gh_covering(banjarmasin, minimal = TRUE)
+  sp::proj4string(banjarmasin_cover) = wgs
+  expect_true(sp::identicalCRS(banjarmasin_tight, banjarmasin_cover))
+  banjarmasin_cover = sp::spTransform(banjarmasin_cover, sp::proj4string(banjarmasin_tight))
+  banjarmasin_tight = sp::spTransform(banjarmasin_tight, sp::proj4string(banjarmasin_tight))
+  expect_identical(banjarmasin_tight, banjarmasin_cover)
 
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
