@@ -19,6 +19,9 @@ addons:
 
 r_packages:
   - covr
+  - sp
+  - sf
+  - rgdal
 
 before_script:
   - echo "Revision:" $TRAVIS_COMMIT >> ./DESCRIPTION

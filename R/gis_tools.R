@@ -1,5 +1,5 @@
 # https://epsg.io/4326
-wgs = function() sp::CRS('+init=epsg:4326')
+wgs = function() sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
 
 # nocov start
 check_suggested = function(pkg) {
