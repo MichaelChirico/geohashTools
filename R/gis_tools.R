@@ -1,5 +1,5 @@
 # https://epsg.io/4326
-wgs = function() sp::CRS('+init=epsg:4326')
+wgs = function() sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
 
 # nocov start
 check_suggested = function(pkg) {
@@ -62,27 +62,37 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
-gh_covering = function(SP, precision = 6L, minimal = FALSE) {
-  check_suggested('sp')
-  if (!inherits(SP, 'Spatial'))
+gh_covering = function (SP, precision = 6L, minimal = FALSE)
+{
+  check_suggested("sp")
+  if (sf_input <- inherits(SP, "sf")) {
+    check_suggested("sf")
+    SP = sf::as_Spatial(SP)
+  }
+  if (!inherits(SP, "Spatial"))
     stop("Object to cover must be Spatial (or subclass)")
+  # sp::over behaves poorly with 0-column input
+  if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
+    SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
-  delta = 2*gh_delta(precision)
+  delta = 2 * gh_delta(precision)
   # TODO: actually goes through an encode-decode cycle -- more efficient to
   #   just build the cells directly by rounding to the precision's grid
   gh = with(expand.grid(
     latitude = seq(bb[2L, 'min'], bb[2L, 'max'] + delta[1L], by = delta[1L]),
     longitude = seq(bb[1L, 'min'], bb[1L, 'max'] + delta[2L], by = delta[2L])
   ), gh_encode(latitude, longitude, precision))
-  if (is.na(prj4 <- sp::proj4string(SP))) sp::`proj4string<-`(SP, prj4 <- wgs())
+  if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs())
   cover = sp::spTransform(gh_to_spdf(gh), prj4)
   if (minimal) {
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    return(cover[c(!is.na(sp::over(cover, SP))), ])
-  } else return(cover)
+    cover = cover[!drop(is.na(sp::over(cover, SP))), ]
+  }
+  return(if (sf_input) sf::st_as_sf(cover) else cover)
 }
+
 
 gh_to_sf = function(...) {
   check_suggested('sf')

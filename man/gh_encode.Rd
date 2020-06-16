@@ -24,8 +24,7 @@ gh_encode(latitude, longitude, precision = 6L)
   \code{character} vector of geohashes corresponding to the input. \code{NA} in gives \code{NA} out.
 }
 \references{
-  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )\cr
-  \url{https://github.com/hkwi/python-geohash} ( Hiroaki Kawai's original Python implementation )
+  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )
 }
 \author{
   Michael Chirico

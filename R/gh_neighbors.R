@@ -1,3 +1,3 @@
-# wrapper to C++ call to do some argument handling in R
-
-gh_neighbors = gh_neighbours = gh_neighbors_
+gh_neighbors = gh_neighbours = function(geohashes, self = TRUE) {
+  .Call(Cgh_neighbors, geohashes, self)
+}

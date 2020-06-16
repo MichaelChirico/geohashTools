@@ -27,13 +27,13 @@ cn_lnk =
 cat('![logo](logo.png "geohashTools") ',
     '[![codecov](', cc, '/coverage.svg?branch=master)](', cc, '?branch=master) ',
     '[![travis](',  tr, '.svg?branch=master)](', tr, ') ', 
-    '[![cran_chk](', cn_img, ')](', cn_lnk, ')',
+    '[![cran_chk](', cn_img, ')](', cn_lnk, ') ' ,
     sep = '')
 ```
 
 This package provides tools for working with [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer)'s [geohash](https://en.wikipedia.org/wiki/Geohash) system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively.
 
-The C++ source code is largely copied from [Hiroaki Kawai](https://github.com/hkwi)'s excellent implementation of geohash encoding/decoding (built with a [Python API](https://github.com/hkwi/python-geohash)), with minor top-level tweaks to match the [`Rcpp`](http://www.rcpp.org/) API to R.
+Originally, we adapted C++ source from [Hiroaki Kawai](https://github.com/hkwi), but have now rewritten the implementation completely with a new approach in C.
 
 ## Encoding geohashes
 
@@ -100,10 +100,10 @@ One unfortunate consequence of the geohash system is that, while geohashes that 
 
 Fret not -- one tool for helping overcome this is the `gh_neighbors` function (`gh_neighbours` is also registered, for the Commonwealthy among us), which will return all of the geohashes adjacent to a given geohash (or vector of geohashes) at the same level of precision. 
 
-For example, Aung San Suu Kyi's childhood home is roughly at `w4urs5pc`, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:
+For example, the Merlion statue in Singapore is roughly at `w21z74nz`, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:
 
 ```{r neighbors}
-gh_neighbors('w4urs5pc')
+gh_neighbors('w21z74nz')
 ```
 
 ## API to other GIS tools in R

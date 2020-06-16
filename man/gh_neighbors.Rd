@@ -22,11 +22,10 @@ gh_neighbours(geohashes, self = TRUE)
 \value{
   \code{list} with \code{character} vector entries in the direction relative to the input geohashes indicated by their name (e.g. \code{value$south} gives all of the \emph{southern} neighbors of the input \code{geohashes}).
 
-  The order is \code{self} (if \code{self = TRUE}), \code{southwest}, \code{south}, \code{southeast}, \code{east}, \code{northeast}, \code{north}, \code{northwest}, \code{west} (somewhat arbitrarily).
+  The order is \code{self} (if \code{self = TRUE}), \code{southwest}, \code{south}, \code{southeast}, \code{west}, \code{east}, \code{northwest}, \code{north}, \code{northeast} (reflecting an easterly, then northerly traversal of the neighborhod).
 }
 \references{
-  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )\cr
-  \url{https://github.com/hkwi/python-geohash} ( Hiroaki Kawai's original Python implementation )
+  \url{http://geohash.org/} ( Gustavo Niemeyer's original geohash service )
 }
 \author{
   Michael Chirico

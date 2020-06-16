@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 
+*-Ex.*
 *.tar.gz
 *Rcheck
 
@@ -16,3 +17,5 @@
 
 # silly Apple
 .DS_Store
+inst/doc
+docs
