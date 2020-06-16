@@ -239,3 +239,4 @@ working with geohashes:
 
   - <http://www.movable-type.co.uk/scripts/geohash.html>
   - <http://geohash.gofreerange.com/>
+
