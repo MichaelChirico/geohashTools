@@ -4,7 +4,7 @@
 ![logo](logo.png "geohashTools")
 [![codecov](http://codecov.io/github/MichaelChirico/geohashTools/coverage.svg?branch=master)](http://codecov.io/github/MichaelChirico/geohashTools?branch=master)
 [![travis](https://travis-ci.org/MichaelChirico/geohashTools.svg?branch=master)](https://travis-ci.org/MichaelChirico/geohashTools)
-[![cran\_chk](https://cranchecks.info/badges/flavor/release/geohashTools)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)[![cran\_dl](https://cranlogs.r-pkg.org/badges/geohashToolsgeohashTools)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)
+[![cran\_chk](https://cranchecks.info/badges/flavor/release/geohashTools)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)
 
 This package provides tools for working with
 [Gustavo](https://github.com/niemeyer)

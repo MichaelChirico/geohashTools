@@ -21,15 +21,13 @@ repo = sprintf('MichaelChirico/%s', pkg)
 cc = sprintf('http://codecov.io/github/%s', repo)
 tr = sprintf('https://travis-ci.org/%s', repo)
 cn_img = sprintf('https://cranchecks.info/badges/flavor/release/%s', pkg)
-dl_stats = sprintf('https://cranlogs.r-pkg.org/badges/geohashTools%s', pkg)
 cn_lnk = 
   sprintf('https://cran.r-project.org/web/checks/check_results_%s.html', pkg)
 
 cat('![logo](logo.png "geohashTools") ',
     '[![codecov](', cc, '/coverage.svg?branch=master)](', cc, '?branch=master) ',
     '[![travis](',  tr, '.svg?branch=master)](', tr, ') ', 
-    '[![cran_chk](', cn_img, ')](', cn_lnk, ')' ,
-    '[![cran_dl](', dl_stats, ')](', cn_lnk, ')',
+    '[![cran_chk](', cn_img, ')](', cn_lnk, ') ' ,
     sep = '')
 ```
 
