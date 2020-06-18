@@ -108,8 +108,8 @@ test_that('gh_to_sf works', {
 })
 
 test_that('gh_covering works', {
-  skip_if(!requireNamespace('sp'), "sp installation required")
-  skip_if(!requireNamespace('rgdal'), "rgdal installation required")
+  skip_if_not(requireNamespace('sp'), "sp installation required")
+  skip_if_not(requireNamespace('rgdal'), "rgdal installation required")
   banjarmasin = sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
@@ -140,6 +140,12 @@ test_that('gh_covering works', {
   banjarmasin_cover = gh_covering(banjarmasin, minimal = TRUE)
   sp::proj4string(banjarmasin_cover) = wgs
   expect_equivalent(banjarmasin_cover, banjarmasin_tight)
+
+  # works for SpatialPointsDataFrame when minimal=TRUE, #30
+  banjarmasinDF = sp::SpatialPointsDataFrame(
+    banjarmasin, data = data.frame(ID = letters[seq_along(banjarmasin)])
+  )
+  expect_equal(gh_covering(banjarmasinDF, minimal=TRUE)@polygons, banjarmasin_tight@polygons)
 
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
