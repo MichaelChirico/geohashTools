@@ -15,10 +15,6 @@ knitr::opts_chunk$set(
 
 ```
 
-```{r setup}
-library(geohashTools)
-```
-
 # What is a Geohash?
 
 Developed by [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer), the  [geohash](https://en.wikipedia.org/wiki/Geohash) is system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively. Geohashes are a grid-like hierarchical spatial indexing system. The precision of a geohash is dictated by the length of the character string that encodes it. 
@@ -111,7 +107,11 @@ The `gh_to_sp`, `gh_to_spdf` and `gh_to_sf` functions convert geohash or vector 
 library(sf)
 merlion_ghs <- gh_neighbors("w21z74")
 merlion_nbhd <- gh_to_sf(merlion_ghs)
-plot(merlion_nbhd)
+
+# Example plot of geohashes neighbouring w21z74
+plot(merlion_nbhd, col = NA, reset = FALSE, key.pos = NULL)
+text(st_coordinates(st_centroid(merlion_nbhd)),
+     labels = row.names(merlion_nbhd))
 ```
 
 ### gh_covering
@@ -120,6 +120,9 @@ Sometimes we have a set of spatial datapoints that we want to aggregate or index
 
 Let's use the included `meuse` dataset in the `sp` package which shows point coordinates for metal deposits. The first element in this object shows values for cadmium deposits. 
 ```{r meuse, fig.width = 6, fig.height = 6, out.width = '\\textwidth'}
+if (!requireNamespace(ggplot2)) {
+}
+
 library(ggplot2)
 
 data(meuse, package = "sp")
@@ -133,6 +136,7 @@ ggplot() +
 By default, `gh_covering` creates a grid that covers the extent of the bounding box for the spatial object. 
 ```{r meuse_covering}
 meuse_gh <- gh_covering(meuse_sf)
+meuse_gh
 ```
 
 We can visualize what this looks like with geohashes overlayed on top.
@@ -147,9 +151,8 @@ ggplot() +
 
 Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only create geohashes for intersecting objects. 
 ```{r meuse_minimal}
-# Currently doesn't work
-# meuse_gh <- gh_covering(meuse_sf, minimal = TRUE)
-# 
-# plot(meuse_sf[1])
-# plot(meuse_gh[2], add = TRUE)
+meuse_gh <- gh_covering(meuse_sf, minimal = TRUE)
+
+plot(meuse_sf[1], reset = FALSE)
+plot(meuse_gh[2], add = TRUE)
 ```
