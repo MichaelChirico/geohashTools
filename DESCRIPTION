@@ -15,5 +15,6 @@ Suggests:
     sp,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 VignetteBuilder: knitr
