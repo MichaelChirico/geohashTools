@@ -1,5 +1,15 @@
 # `geohashTools` NEWS
 
+## v0.3.2
+
+### NEW FEATURES
+
+### BUG FIXES
+
+ 1. `gh_covering` would fail with `minimal=TRUE` for `SpatialPointsDataFrame` input, [#30](https://github.com/MichaelChirico/geohashTools/issues/30). Thanks @dshkol for the report and working example.
+
+### NOTES
+
 ## v0.3.1
 
 ### NEW FEATURES

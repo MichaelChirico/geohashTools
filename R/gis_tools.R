@@ -88,7 +88,8 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    cover = cover[!drop(is.na(sp::over(cover, SP))), ]
+    cover = cover[which(sapply(sp::over(cover, SP, returnList=TRUE), NROW) > 0L), ]
+    sp::proj4string(cover) = prj4
   }
   return(if (sf_input) sf::st_as_sf(cover) else cover)
 }
