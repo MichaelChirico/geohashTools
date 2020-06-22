@@ -18,3 +18,4 @@ Suggests:
     rmarkdown,
     ggplot2
 VignetteBuilder: knitr
+RoxygenNote: 7.1.0.9000

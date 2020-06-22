@@ -93,11 +93,11 @@
 <p>Encoding is the process of turning latitude/longitude coordinates into geohash strings. For example, Parque Nacional Tayrona in Colombia is located at roughly 11.3113917 degrees of latitude, -74.0779006 degrees of longitude. This can be expressed more compactly as:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">geohashTools</span>)
 <span class="fu"><a href="reference/gh_encode.html">gh_encode</a></span>(<span class="fl">11.3113917</span>, -<span class="fl">74.0779006</span>)</pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">## [1] "d65267"</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">## [1] "d65267"</span></span></code></pre></div>
 <p>These 6 characters identify this point on the globe to within 1.2 kilometers (east-west) and .6 kilometers (north-south).</p>
 <p>The park is quite large, and this is too precise to cover the park; we can “zoom out” by reducing the precision (which is the number of characters in the output, <code>6</code> by default):</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="reference/gh_encode.html">gh_encode</a></span>(<span class="fl">11.3113917</span>, -<span class="fl">74.0779006</span>, <span class="kw">precision</span> <span class="kw">=</span> <span class="fl">5L</span>)</pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">## [1] "d6526"</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## [1] "d6526"</span></span></code></pre></div>
 <div id="public-art-in-chicago" class="section level3">
 <h3 class="hasAnchor">
 <a href="#public-art-in-chicago" class="anchor"></a>Public Art in Chicago</h3>
@@ -115,17 +115,17 @@
 <span class="no">art</span>[ , <span class="no">.N</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fu">.</span>(<span class="kw">geohash</span> <span class="kw">=</span> <span class="fu"><a href="reference/gh_encode.html">gh_encode</a></span>(<span class="no">LATITUDE</span>, <span class="no">LONGITUDE</span>, <span class="fl">5L</span>))
      <span class="co"># only show the top 10</span>
      ][<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html">order</a></span>(-<span class="no">N</span>)][<span class="fl">1</span>:<span class="fl">10</span>]</pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">##     geohash  N</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">##  1:   dp3wm 46</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">##  2:   dp3wn 42</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">##  3:   dp3wt 16</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">##  4:   dp3wq 13</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">##  5:   dp3wk 10</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">##  6:   dp3wj  9</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">##  7:   dp3ty  9</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">##  8:   dp3w7  8</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">##  9:   dp3tw  6</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">## 10:   dp3wu  4</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">##     geohash  N</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">##  1:   dp3wm 46</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">##  2:   dp3wn 42</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">##  3:   dp3wt 16</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">##  4:   dp3wq 13</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">##  5:   dp3wk 10</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">##  6:   dp3wj  9</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">##  7:   dp3ty  9</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">##  8:   dp3w7  8</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">##  9:   dp3tw  6</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">## 10:   dp3wu  4</span></span></code></pre></div>
 <p>This is pretty impractical <em>per se</em> (where is <code>dp3wm</code>?); we’ll return to this once we’ve introduced more functionality.</p>
 </div>
 </div>
@@ -134,61 +134,61 @@
 <a href="#decoding-geohashes" class="anchor"></a>Decoding geohashes</h2>
 <p>The reverse of encoding geohashes is of course decoding them – taking a given geohash string and converting it into global coordinates. For example, the Ethiopian coffee growing region of Yirgacheffe is roughly at <code>sc54v</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>)</pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co">## $latitude</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">## [1] 6.130371</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">## </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">## $longitude</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">## [1] 38.21045</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## $latitude</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">## [1] 6.130371</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">## </span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">## $longitude</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">## [1] 38.21045</span></span></code></pre></div>
 <p>It can also be helpful to know just how precisely we’ve identified these coordinates; the <code>include_delta</code> argument gives the cell half-widths in both directions in addition to the cell centroid:</p>
 <div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>, <span class="kw">include_delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co">## $latitude</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">## [1] 6.130371</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">## </span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">## $longitude</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">## [1] 38.21045</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">## </span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">## $delta_latitude</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">## [1] 0.02197266</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">## </span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">## $delta_longitude</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">## [1] 0.02197266</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">## $latitude</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">## [1] 6.130371</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">## </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">## $longitude</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">## [1] 38.21045</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">## </span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">## $delta_latitude</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">## [1] 0.02197266</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">## </span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">## $delta_longitude</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">## [1] 0.02197266</span></span></code></pre></div>
 <p>In terms of latitude and longitude, all geohashes with the same precision have the same dimensions (though the physical size of the “rectangle” changes depending on the latitude); as such it’s easy to figure out thecell half-widths from the precision alone using <code>gh_delta</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="r"><span class="fu"><a href="reference/utils.html">gh_delta</a></span>(<span class="fl">5L</span>)</pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co">## [1] 0.02197266 0.02197266</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">## [1] 0.02197266 0.02197266</span></span></code></pre></div>
 </div>
 <div id="geohash-neighborhoods" class="section level2">
 <h2 class="hasAnchor">
 <a href="#geohash-neighborhoods" class="anchor"></a>Geohash neighborhoods</h2>
-<p>One unfortunate consequence of the geohash system is that, while geohashes that are lexicographically similar (e.g. <code>wxyz01</code> and <code>wxyz12</code>) are certainly close to one another, the converse is not true – for example, <code>7gxyru</code> and <code>k58n2h</code> are neighbors! Put another way, small movements on the globe occasionally have visually huge jumps in the geohash-encoded output.</p>
+<p>One unfortunate consequence of the geohash system is that, while geohashes that are lexicographically similar (e.g. <code>wxyz01</code> and <code>wxyz12</code>) are certainly close to one another, the converse is not true – for example, <code>7gxyru</code> and <code>k58n2h</code> are neighbors! Put another way, small movements on the globe occasionally have visually huge jumps in the geohash-encoded output.</p>
 <p>Fret not – one tool for helping overcome this is the <code>gh_neighbors</code> function (<code>gh_neighbours</code> is also registered, for the Commonwealthy among us), which will return all of the geohashes adjacent to a given geohash (or vector of geohashes) at the same level of precision.</p>
 <p>For example, the Merlion statue in Singapore is roughly at <code>w21z74nz</code>, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:</p>
 <div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="reference/gh_neighbors.html">gh_neighbors</a></span>(<span class="st">'w21z74nz'</span>)</pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co">## $self</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">## [1] "w21z74nz"</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## $southwest</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">## [1] "w21z74nw"</span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">## $south</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">## [1] "w21z74ny"</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">## $southeast</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">## [1] "w21z74pn"</span></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">## $west</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">## [1] "w21z74nx"</span></a>
-<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">## $east</span></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">## [1] "w21z74pp"</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">## $northwest</span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">## [1] "w21z74q8"</span></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="co">## $north</span></a>
-<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="co">## [1] "w21z74qb"</span></a>
-<a class="sourceLine" id="cb14-24" data-line-number="24"><span class="co">## </span></a>
-<a class="sourceLine" id="cb14-25" data-line-number="25"><span class="co">## $northeast</span></a>
-<a class="sourceLine" id="cb14-26" data-line-number="26"><span class="co">## [1] "w21z74r0"</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## $self</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">## [1] "w21z74nz"</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co">## </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">## $southwest</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co">## [1] "w21z74nw"</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="co">## </span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="co">## $south</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co">## [1] "w21z74ny"</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co">## </span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co">## $southeast</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">## [1] "w21z74pn"</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="co">## </span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">## $west</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co">## [1] "w21z74nx"</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="co">## </span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co">## $east</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a><span class="co">## [1] "w21z74pp"</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a><span class="co">## </span></span>
+<span id="cb14-19"><a href="#cb14-19"></a><span class="co">## $northwest</span></span>
+<span id="cb14-20"><a href="#cb14-20"></a><span class="co">## [1] "w21z74q8"</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a><span class="co">## </span></span>
+<span id="cb14-22"><a href="#cb14-22"></a><span class="co">## $north</span></span>
+<span id="cb14-23"><a href="#cb14-23"></a><span class="co">## [1] "w21z74qb"</span></span>
+<span id="cb14-24"><a href="#cb14-24"></a><span class="co">## </span></span>
+<span id="cb14-25"><a href="#cb14-25"></a><span class="co">## $northeast</span></span>
+<span id="cb14-26"><a href="#cb14-26"></a><span class="co">## [1] "w21z74r0"</span></span></code></pre></div>
 </div>
 <div id="api-to-other-gis-tools-in-r" class="section level2">
 <h2 class="hasAnchor">
@@ -260,7 +260,7 @@
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/MichaelChirico">Michael Chirico</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<a href="https://michaelchirico.github.io/geohashTools/index.html">Michael Chirico</a> <br><small class="roles"> Author, maintainer </small>  </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
@@ -278,7 +278,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://github.com/MichaelChirico">Michael Chirico</a>.</p>
+  <p>Developed by <a href="https://michaelchirico.github.io/geohashTools/index.html">Michael Chirico</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -77,7 +77,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="geohashTools_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>geohashTools</h1>
@@ -90,7 +90,6 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">geohashTools</span>)</pre></body></html></div>
 <div id="what-is-a-geohash" class="section level1">
 <h1 class="hasAnchor">
 <a href="#what-is-a-geohash" class="anchor"></a>What is a Geohash?</h1>
@@ -113,40 +112,40 @@
 <h2 class="hasAnchor">
 <a href="#encoding-geohashes" class="anchor"></a>Encoding geohashes</h2>
 <p>Encoding is the process of turning latitude/longitude coordinates into geohash strings. For example, Parque Nacional Tayrona in Colombia is located at roughly 11.3113917 degrees of latitude, -74.0779006 degrees of longitude. This can be expressed more compactly as:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">geohashTools</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">geohashTools</span>)
 <span class="fu"><a href="../reference/gh_encode.html">gh_encode</a></span>(<span class="fl">11.3113917</span>, -<span class="fl">74.0779006</span>)</pre></body></html></div>
 <pre><code>## [1] "d65267"</code></pre>
 <p>These 6 characters identify this point on the globe to within 1.2 kilometers (east-west) and .6 kilometers (north-south).</p>
 <p>The park is quite large, and this is too precise to cover the park; we can “zoom out” by reducing the precision (which is the number of characters in the output, <code>6</code> by default):</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_encode.html">gh_encode</a></span>(<span class="fl">11.3113917</span>, -<span class="fl">74.0779006</span>, <span class="kw">precision</span> <span class="kw">=</span> <span class="fl">5L</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_encode.html">gh_encode</a></span>(<span class="fl">11.3113917</span>, -<span class="fl">74.0779006</span>, <span class="kw">precision</span> <span class="kw">=</span> <span class="fl">5L</span>)</pre></body></html></div>
 <pre><code>## [1] "d6526"</code></pre>
 <div id="example-encoding-many-points" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-encoding-many-points" class="anchor"></a>Example: Encoding many points</h3>
 <p>We can use this as a simple, regular level of spatial aggregation for spatial points data, e.g., counting presence of public art throughout the city of Chicago, as captured in <a href="https://data.cityofchicago.org/Parks-Recreation/Parks-Public-Art/sj6t-9cju">this dataset</a> provided by the City:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(
   <span class="kw">x</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">20</span>),
   <span class="kw">y</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">20</span>)
 )
 <span class="no">gh</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gh_encode.html">gh_encode</a></span>(<span class="no">coords</span>$<span class="no">x</span>,<span class="no">coords</span>$<span class="no">y</span>)
 <span class="no">gh</span></pre></body></html></div>
-<pre><code>##  [1] "kpb8bm" "s0053c" "ebp05w" "s01hdn" "ebr9j3" "7zzr1y" "s00xqr" "ebpm52"
-##  [9] "ebpjme" "kpb30c" "kpb7w1" "kpb12y" "kpbpc4" "7zwyp7" "ebp9vd" "ebpsz9"
-## [17] "s00dhr" "kpb1pr" "kpb45u" "ebnt5z"</code></pre>
+<pre><code>##  [1] "7zzu0p" "7zzjux" "7zwtzp" "7zzmyj" "ebr1kq" "ebpgsp" "ebr93k" "kpbwst"
+##  [9] "7zz7xf" "ebp8pf" "s005tm" "s001bj" "7zz4pq" "kpbjcc" "s021jd" "s00bmh"
+## [17] "ebp6ug" "7zzk95" "kpbpf6" "ebpdf1"</code></pre>
 </div>
 </div>
 <div id="decoding-geohashes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#decoding-geohashes" class="anchor"></a>Decoding geohashes</h2>
 <p>The reverse of encoding geohashes is of course decoding them – taking a given geohash string and converting it into global coordinates. For example, the Ethiopian coffee growing region of Yirgacheffe is roughly at <code>sc54v</code>:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>)</pre></body></html></div>
 <pre><code>## $latitude
 ## [1] 6.130371
 ## 
 ## $longitude
 ## [1] 38.21045</code></pre>
 <p>It can also be helpful to know just how precisely we’ve identified these coordinates; the <code>include_delta</code> argument gives the cell half-widths in both directions in addition to the cell centroid:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>, <span class="kw">include_delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="st">'sc54v'</span>, <span class="kw">include_delta</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <pre><code>## $latitude
 ## [1] 6.130371
 ## 
@@ -160,29 +159,29 @@
 ## [1] 0.02197266</code></pre>
 <p>For more detail on precision, see the table earlier on this vignette which shows the approximate level potential delta at different precision levels.</p>
 <p>In terms of latitude and longitude, all geohashes with the same precision have the same dimensions (though the physical size of the “rectangle” changes depending on the latitude); as such it’s easy to figure out thecell half-widths from the precision alone using <code>gh_delta</code>:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/utils.html">gh_delta</a></span>(<span class="fl">5L</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/utils.html">gh_delta</a></span>(<span class="fl">5L</span>)</pre></body></html></div>
 <pre><code>## [1] 0.02197266 0.02197266</code></pre>
 <p>You can also pass entire vectors into <code>gh_decode</code> to decode multiple geohashes at once.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="no">gh</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_decode.html">gh_decode</a></span>(<span class="no">gh</span>)</pre></body></html></div>
 <pre><code>## $latitude
-##  [1] -1.24420166  0.57952881  0.03570557  0.82672119  1.59027100 -0.14007568
-##  [7]  1.31561279  0.88165283  0.94207764 -1.22222900 -0.78277588 -1.15081787
-## [13] -0.03021240 -1.73858643  0.32135010  0.84320068  0.39276123 -1.18927002
-## [19] -1.02996826  0.92010498
+##  [1] -0.66192627 -0.35430908 -1.76055908 -0.36529541  1.66168213  0.65643311
+##  [7]  1.65069580 -0.23345947 -0.77728271  0.01373291  0.64544678  0.33782959
+## [13] -1.01898193 -0.38726807  1.59576416  0.06866455  0.50262451 -0.59600830
+## [19] -0.03021240  0.49163818
 ## 
 ## $longitude
-##  [1]  0.71960449  0.08239746 -1.24694824  1.49963379 -0.46691895 -0.97229004
-##  [7]  0.98327637 -0.90637207 -1.15905762  0.39001465  0.62072754  0.03845215
-## [13]  0.04943848 -1.43371582 -0.45593262 -0.36804199  0.89538574  0.32409668
-## [19]  0.17028809 -1.93908691</code></pre>
+##  [1] -0.346069336 -1.203002930 -1.796264648 -0.785522461 -1.213989258
+##  [6] -0.170288086 -0.642700195  0.906372070 -0.708618164 -0.357055664
+## [11]  0.236206055  0.005493164 -1.082153320  0.082397461  0.247192383
+## [16]  1.279907227 -0.840454102 -1.005249023  0.104370117 -0.609741211</code></pre>
 </div>
 <div id="geohash-neighborhoods" class="section level2">
 <h2 class="hasAnchor">
 <a href="#geohash-neighborhoods" class="anchor"></a>Geohash neighborhoods</h2>
-<p>One unfortunate consequence of the geohash system is that, while geohashes that are lexicographically similar (e.g. <code>wxyz01</code> and <code>wxyz12</code>) are certainly close to one another, the converse is not true – for example, <code>7gxyru</code> and <code>k58n2h</code> are neighbors! Put another way, small movements on the globe occasionally have visually huge jumps in the geohash-encoded output.</p>
+<p>One unfortunate consequence of the geohash system is that, while geohashes that are lexicographically similar (e.g. <code>wxyz01</code> and <code>wxyz12</code>) are certainly close to one another, the converse is not true – for example, <code>7gxyru</code> and <code>k58n2h</code> are neighbors! Put another way, small movements on the globe occasionally have visually huge jumps in the geohash-encoded output.</p>
 <p>The <code>gh_neighbors</code> function is designed to address this. Calling <code>gh_neighbours</code> will return all of the geohashes adjacent to a given geohash (or vector of geohashes) at the same level of precision.</p>
 <p>For example, the Merlion statue in Singapore is roughly at <code>w21z74nz</code>, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_neighbors.html">gh_neighbors</a></span>(<span class="st">'w21z74nz'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/gh_neighbors.html">gh_neighbors</a></span>(<span class="st">'w21z74nz'</span>)</pre></body></html></div>
 <pre><code>## $self
 ## [1] "w21z74nz"
 ## 
@@ -218,11 +217,20 @@
 <h3 class="hasAnchor">
 <a href="#gh_to_" class="anchor"></a>gh_to_*</h3>
 <p>The <code>gh_to_sp</code>, <code>gh_to_spdf</code> and <code>gh_to_sf</code> functions convert geohash or vector of geohashes into spatial objects of <code>sp</code> and <code>sf</code> class respectively. Consider the previous example with the Singapore Merlion and some random data.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)</pre></body></html></div>
 <pre><code>## Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</code></pre>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">merlion_ghs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gh_neighbors.html">gh_neighbors</a></span>(<span class="st">"w21z74"</span>)
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">merlion_ghs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gh_neighbors.html">gh_neighbors</a></span>(<span class="st">"w21z74"</span>)
 <span class="no">merlion_nbhd</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gis_tools.html">gh_to_sf</a></span>(<span class="no">merlion_ghs</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">merlion_nbhd</span>)</pre></body></html></div>
+
+<span class="co"># Example plot of geohashes neighbouring w21z74</span>
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">merlion_nbhd</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fl">NA</span>, <span class="kw">reset</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">key.pos</span> <span class="kw">=</span> <span class="kw">NULL</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid</a></span>(<span class="no">merlion_nbhd</span>)),
+     <span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="no">merlion_nbhd</span>))</pre></body></html></div>
+<pre><code>## Warning in st_centroid.sf(merlion_nbhd): st_centroid assumes attributes are
+## constant over geometries of x</code></pre>
+<pre><code>## Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =
+## of_largest_polygon): st_centroid does not give correct centroids for longitude/
+## latitude data</code></pre>
 <p><img src="geohashTools_files/figure-html/merlion_nbhd-1.png" width="\textwidth"></p>
 </div>
 <div id="gh_covering" class="section level3">
@@ -230,7 +238,11 @@
 <a href="#gh_covering" class="anchor"></a>gh_covering</h3>
 <p>Sometimes we have a set of spatial datapoints that we want to aggregate or index using geohashes. The <code>gh_covering</code> function produces a grid of geohashes that overlap with the spatial points. For this function to work, the spatial object has to be in the <a href="https://epsg.io/4326">WGS84 (EPSG 4326)</a> coordinate reference system that the geohashes use.</p>
 <p>Let’s use the included <code>meuse</code> dataset in the <code>sp</code> package which shows point coordinates for metal deposits. The first element in this object shows values for cadmium deposits.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"ggplot2"</span>)) {
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ggplot2"</span>)
+}</pre></body></html></div>
+<pre><code>## Loading required namespace: ggplot2</code></pre>
+<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">meuse</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"sp"</span>)
 <span class="no">meuse_sf</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="no">meuse</span>, <span class="kw">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="kw">crs</span> <span class="kw">=</span> <span class="fl">28992</span>, <span class="kw">agr</span> <span class="kw">=</span> <span class="st">"constant"</span>)
@@ -240,9 +252,28 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_sf</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">colour</span> <span class="kw">=</span> <span class="no">cadmium</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()</pre></body></html></div>
 <p><img src="geohashTools_files/figure-html/meuse-1.png" width="\textwidth"> By default, <code>gh_covering</code> creates a grid that covers the extent of the bounding box for the spatial object.</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">meuse_gh</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gis_tools.html">gh_covering</a></span>(<span class="no">meuse_sf</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">meuse_gh</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gis_tools.html">gh_covering</a></span>(<span class="no">meuse_sf</span>)</pre></body></html></div>
+<pre><code>## Warning in sp::proj4string(SP): CRS object has comment, which is lost in output</code></pre>
+<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">meuse_gh</span></pre></body></html></div>
+<pre><code>## Simple feature collection with 40 features and 1 field
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: 5.712891 ymin: 50.95459 xmax: 5.767822 ymax: 50.99854
+## CRS:            +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
+## First 10 features:
+##        ID                       geometry
+## u1h1fh  1 POLYGON ((5.712891 50.95459...
+## u1h1fj  2 POLYGON ((5.712891 50.96008...
+## u1h1fn  3 POLYGON ((5.712891 50.96558...
+## u1h1fp  4 POLYGON ((5.712891 50.97107...
+## u1h440  5 POLYGON ((5.712891 50.97656...
+## u1h441  6 POLYGON ((5.712891 50.98206...
+## u1h444  7 POLYGON ((5.712891 50.98755...
+## u1h445  8 POLYGON ((5.712891 50.99304...
+## u1h1fk  9 POLYGON ((5.723877 50.95459...
+## u1h1fm 10 POLYGON ((5.723877 50.96008...</code></pre>
 <p>We can visualize what this looks like with geohashes overlayed on top.</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() +
+<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_sf</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_gh</span>, <span class="kw">fill</span>  <span class="kw">=</span> <span class="fl">NA</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_gh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">meuse_gh</span>))) +
@@ -251,11 +282,16 @@
 ## give correct results for longitude/latitude data</code></pre>
 <p><img src="geohashTools_files/figure-html/meuse_covering_plot-1.png" width="\textwidth"></p>
 <p>Alternatively, using <code>gh_covering</code> with the parameter <code>minimal = TRUE</code> will only create geohashes for intersecting objects.</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"># Currently doesn't work
-# meuse_gh &lt;- gh_covering(meuse_sf, minimal = TRUE)
-# 
-# plot(meuse_sf[1])
-# plot(meuse_gh[2], add = TRUE)</pre></body></html></div>
+<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="no">meuse_gh</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gis_tools.html">gh_covering</a></span>(<span class="no">meuse_sf</span>, <span class="kw">minimal</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<pre><code>## Warning in sp::proj4string(SP): CRS object has comment, which is lost in output</code></pre>
+<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_sf</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_gh</span>, <span class="kw">fill</span>  <span class="kw">=</span> <span class="fl">NA</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf_text</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">meuse_gh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">meuse_gh</span>))) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()</pre></body></html></div>
+<pre><code>## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
+## give correct results for longitude/latitude data</code></pre>
+<p><img src="geohashTools_files/figure-html/meuse_minimal-1.png" width="\textwidth"></p>
 </div>
 </div>
 </div>
@@ -272,7 +308,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://github.com/MichaelChirico">Michael Chirico</a>.</p>
+  <p>Developed by <a href="https://michaelchirico.github.io/geohashTools/index.html">Michael Chirico</a>.</p>
 </div>
 
 <div class="pkgdown">
