@@ -138,7 +138,7 @@ gh_delta(5L)
 ## Geohash neighborhoods
 
 One unfortunate consequence of the geohash system is that, while
-geohashes that are lexicographically similar (e.g. `wxyz01` and
+geohashes that are lexicographically similar (e.g. `wxyz01` and
 `wxyz12`) are certainly close to one another, the converse is not true –
 for example, `7gxyru` and `k58n2h` are neighbors\! Put another way,
 small movements on the globe occasionally have visually huge jumps in
@@ -149,40 +149,40 @@ function (`gh_neighbours` is also registered, for the Commonwealthy
 among us), which will return all of the geohashes adjacent to a given
 geohash (or vector of geohashes) at the same level of precision.
 
-For example, Aung San Suu Kyi’s childhood home is roughly at `w4urs5pc`,
+For example, the Merlion statue in Singapore is roughly at `w21z74nz`,
 but this level of precision zooms in a bit too far. The geohash
 neighborhood thereof can be found with:
 
 ``` r
-gh_neighbors('w4urs5pc')
+gh_neighbors('w21z74nz')
 ```
 
     ## $self
-    ## [1] "w4urs5pc"
+    ## [1] "w21z74nz"
     ## 
     ## $southwest
-    ## [1] "w4urs5p8"
+    ## [1] "w21z74nw"
     ## 
     ## $south
-    ## [1] "w4urs5pb"
+    ## [1] "w21z74ny"
     ## 
     ## $southeast
-    ## [1] "w4urs700"
+    ## [1] "w21z74pn"
     ## 
     ## $west
-    ## [1] "w4urs5p9"
+    ## [1] "w21z74nx"
     ## 
     ## $east
-    ## [1] "w4urs701"
+    ## [1] "w21z74pp"
     ## 
     ## $northwest
-    ## [1] "w4urs5pd"
+    ## [1] "w21z74q8"
     ## 
     ## $north
-    ## [1] "w4urs5pf"
+    ## [1] "w21z74qb"
     ## 
     ## $northeast
-    ## [1] "w4urs704"
+    ## [1] "w21z74r0"
 
 ## API to other GIS tools in R
 
@@ -239,3 +239,4 @@ working with geohashes:
 
   - <http://www.movable-type.co.uk/scripts/geohash.html>
   - <http://geohash.gofreerange.com/>
+
