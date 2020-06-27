@@ -7,10 +7,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, eval = FALSE, include = FALSE}
+```{r, eval = TRUE, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
 )
 
 ```
@@ -103,7 +105,7 @@ There are several `geohashTools` helper functions for converting geohashes into 
 ### gh_to_*
 
 The `gh_to_sp`, `gh_to_spdf` and `gh_to_sf` functions convert geohash or vector of geohashes into spatial objects of `sp` and `sf` class respectively. Consider the previous example with the Singapore Merlion and some random data.
-```{r merlion_nbhd, fig.width = 6, fig.height = 6, out.width = '\\textwidth'}
+```{r merlion_nbhd, fig.width = 3, fig.height = 3, out.width = '\\textwidth'}
 library(sf)
 merlion_ghs <- gh_neighbors("w21z74")
 merlion_nbhd <- gh_to_sf(merlion_ghs)
@@ -119,7 +121,7 @@ text(st_coordinates(st_centroid(merlion_nbhd)),
 Sometimes we have a set of spatial datapoints that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial points. For this function to work, the spatial object has to be in the [WGS84 (EPSG 4326)](https://epsg.io/4326) coordinate reference system that the geohashes use. 
 
 Let's use the included `meuse` dataset in the `sp` package which shows point coordinates for metal deposits. The first element in this object shows values for cadmium deposits. 
-```{r meuse, fig.width = 6, fig.height = 6, out.width = '\\textwidth'}
+```{r meuse, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 if (!requireNamespace("ggplot2")) {
   install.packages("ggplot2")
 }
@@ -142,7 +144,7 @@ meuse_gh
 
 We can visualize what this looks like with geohashes overlayed on top.
 
-```{r meuse_covering_plot, fig.width = 6, fig.height = 6, out.width = '\\textwidth'}
+```{r meuse_covering_plot, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 ggplot() +
   geom_sf(data = meuse_sf) +
   geom_sf(data = meuse_gh, fill  = NA) +
@@ -151,7 +153,7 @@ ggplot() +
 ```
 
 Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only create geohashes for intersecting objects. 
-```{r meuse_minimal, fig.width = 6, fig.height = 6, out.width = '\\textwidth'}
+```{r meuse_minimal, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 meuse_gh <- gh_covering(meuse_sf, minimal = TRUE)
 
 ggplot() +

@@ -1,7 +1,9 @@
+url: https://michaelchirico.github.io/geohashTools/index.html
+
 home:
   title: Tools for working with geohashes
 authors:
   Michael Chirico:
-    href: https://michaelchirico.github.io/geohashTools/index.html
+    href: https://github.com/MichaelChirico
 template:
   params:
