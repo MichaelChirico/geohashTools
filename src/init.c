@@ -1,11 +1,6 @@
 #include "geohash.h"
 #include <R_ext/Rdynload.h>
 
-// .Calls
-SEXP gh_encode();
-SEXP gh_decode();
-SEXP gh_neighbors();
-
 static const
 R_CallMethodDef callMethods[] = {
   {"Cgh_encode", (DL_FUNC) &gh_encode, -1},
@@ -15,6 +10,12 @@ R_CallMethodDef callMethods[] = {
 };
 
 void R_init_geohashTools(DllInfo *info) {
+  R_registerRoutines(
+      info,
+      /*.C*/ NULL,
+      /*.Call*/ callMethods,
+      /*.Fortran*/ NULL,
+      /*.External*/NULL);
   R_useDynamicSymbols(info, FALSE);
-  R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+  R_forceSymbols(info, TRUE);
 }
