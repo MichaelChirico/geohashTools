@@ -18,4 +18,5 @@ Suggests:
     rmarkdown,
     ggplot2
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0.9000
+Encoding: UTF-8
+RoxygenNote: 7.2.2
