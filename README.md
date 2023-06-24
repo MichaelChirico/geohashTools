@@ -1,7 +1,5 @@
 ---
-output:
-  github_document:
-    html_preview: false
+output: github_document
 ---
 
 
@@ -12,7 +10,7 @@ output:
 ![logo](logo.png "geohashTools")
 [![codecov](https://codecov.io/gh/MichaelChirico/geohashTools/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MichaelChirico/geohashTools?branch=master)
 [![Build Status](https://app.travis-ci.com/MichaelChirico/geohashTools.svg?branch=master)](https://app.travis-ci.com/MichaelChirico/geohashTools)
-[![cran\_chk](https://cranchecks.info/badges/flavor/release/geohashTools)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/geohashTools)](https://cran.r-project.org/package=geohashTools)
 
 This package provides tools for working with [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer)'s [geohash](https://en.wikipedia.org/wiki/Geohash) system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively.
 
