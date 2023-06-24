@@ -62,8 +62,7 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
-gh_covering = function (SP, precision = 6L, minimal = FALSE)
-{
+gh_covering = function (SP, precision = 6L, minimal = FALSE) {
   check_suggested("sp")
   if (sf_input <- inherits(SP, "sf")) {
     check_suggested("sf")
@@ -83,12 +82,14 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
     longitude = seq(bb[1L, 'min'], bb[1L, 'max'] + delta[2L], by = delta[2L])
   ), gh_encode(latitude, longitude, precision))
   if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs())
-  cover = sp::spTransform(gh_to_spdf(gh), prj4)
+  cover = methods::as(gh_to_sf(gh), "Spatial")
+  sp::proj4string(cover) = prj4
   if (minimal) {
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    cover = cover[which(sapply(sp::over(cover, SP, returnList=TRUE), NROW) > 0L), ]
+    n_in_cover = vapply(sp::over(cover, SP, returnList=TRUE), NROW, integer(1L))
+    cover = cover[which(n_in_cover > 0L), ]
     sp::proj4string(cover) = prj4
   }
   return(if (sf_input) sf::st_as_sf(cover) else cover)

@@ -21,7 +21,6 @@ r_packages:
   - covr
   - sp
   - sf
-  - rgdal
   - ggplot2
 
 before_script:

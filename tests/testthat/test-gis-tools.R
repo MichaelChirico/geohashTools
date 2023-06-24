@@ -1,7 +1,7 @@
 context('GIS tools')
 
 test_that('gh_to_sp works', {
-  skip_if(!requireNamespace('sp'), "sp installation required")
+  skip_if_not_installed('sp')
   mauritius = c("mk2u", "mk2e", "mk2g", "mk35", "mk3h",
                 "mk3j", "mk2v", "mk2t", "mk2s")
 
@@ -25,7 +25,7 @@ test_that('gh_to_sp works', {
 })
 
 test_that('gh_to_spdf.default works', {
-  skip_if(!requireNamespace('sp'), "sp installation required")
+  skip_if_not_installed('sp')
   urumqi = c("tzy3", "tzy0", "tzy2", "tzy8", "tzy9",
              "tzyd", "tzy6", "tzy4", "tzy1")
 
@@ -51,7 +51,7 @@ test_that('gh_to_spdf.default works', {
 })
 
 test_that('gh_to_spdf.data.frame works', {
-  skip_if(!requireNamespace('sp'), "sp installation required")
+  skip_if_not_installed('sp')
   urumqi = c("tzy3", "tzy0", "tzy2", "tzy8", "tzy9",
              "tzyd", "tzy6", "tzy4", "tzy1")
   DF = data.frame(
@@ -88,7 +88,7 @@ test_that('gh_to_spdf.data.frame works', {
 })
 
 test_that('gh_to_sf works', {
-  skip_if(!requireNamespace('sf'), "sf installation required")
+  skip_if_not_installed('sf')
   baku = c("tp5my", "tp5mt", "tp5mw", "tp5mx", "tp5mz",
            "tp5qp", "tp5qn", "tp5qj", "tp5mv")
 
@@ -108,8 +108,7 @@ test_that('gh_to_sf works', {
 })
 
 test_that('gh_covering works', {
-  skip_if_not(requireNamespace('sp'), "sp installation required")
-  skip_if_not(requireNamespace('rgdal'), "rgdal installation required")
+  skip_if_not_installed('sp')
   banjarmasin = sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
@@ -152,9 +151,8 @@ test_that('gh_covering works', {
 })
 
 test_that('gh_covering_sf works', {
-  skip_if(!requireNamespace('sp'), "sp installation required")
-  skip_if(!requireNamespace('sf'), "sp installation required")
-  skip_if(!requireNamespace('rgdal'), "rgdal installation required")
+  skip_if_not_installed('sp')
+  skip_if_not_installed('sf')
   banjarmasin = sf::st_as_sf(sp::SpatialPoints(cbind(
     c(114.605, 114.5716, 114.627, 114.5922, 114.6321,
       114.5804, 114.6046, 114.6028, 114.6232, 114.5792),
