@@ -1,5 +1,5 @@
 Package: geohashTools
-Version: 0.3.3
+Version: 0.3.2.9999
 Title: Tools for Working with Geohashes
 Authors@R: c(
   person('Michael', 'Chirico', role = c('aut', 'cre'), email = 'MichaelChirico4@gmail.com'),
