@@ -1,7 +1,5 @@
 ---
-output:
-  github_document:
-    html_preview: false
+output: github_document
 ---
 
 ```{r, echo = FALSE}
@@ -23,7 +21,7 @@ local({
 ![logo](logo.png "%1$s")
 [![codecov](https://codecov.io/gh/%2$s/branch/master/graph/badge.svg)](https://app.codecov.io/gh/%2$s?branch=master)
 [![Build Status](https://app.travis-ci.com/%2$s.svg?branch=master)](https://app.travis-ci.com/%2$s)
-[![cran\\_chk](https://cranchecks.info/badges/flavor/release/%1$s)](https://cran.r-project.org/web/checks/check_results_%1$s.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/%1$s)](https://cran.r-project.org/package=%1$s)
 ', pkg, repo))
 })
 ```
