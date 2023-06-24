@@ -10,9 +10,9 @@ output:
 
 
 ![logo](logo.png "geohashTools")
-[![codecov](http://codecov.io/github/MichaelChirico/geohashTools/coverage.svg?branch=master)](https://codecov.io:443/github/MichaelChirico/geohashTools?branch=master)
-[![travis](https://travis-ci.org/MichaelChirico/geohashTools.svg?branch=master)](https://travis-ci.org/MichaelChirico/geohashTools)
-[![cran\_chk](https://badges.cranchecks.info/flavor/release/geohashTools.svg)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)
+[![codecov](https://codecov.io/gh/MichaelChirico/geohashTools/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MichaelChirico/geohashTools?branch=master)
+[![Build Status](https://app.travis-ci.com/MichaelChirico/geohashTools.svg?branch=master)](https://app.travis-ci.com/MichaelChirico/geohashTools)
+[![cran\_chk](https://cranchecks.info/badges/flavor/release/geohashTools)](https://cran.r-project.org/web/checks/check_results_geohashTools.html)
 
 This package provides tools for working with [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer)'s [geohash](https://en.wikipedia.org/wiki/Geohash) system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively.
 
@@ -52,13 +52,11 @@ We can use this as a simple, regular level of spatial aggregation for spatial po
 
 ```r
 ## first, pull the data internally from https://data.cityofchicago.org
-tmp = tempfile(fileext = 'csv')
-api_stem = 'https://data.cityofchicago.org/api/views/'
-URL = paste0(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
-download.file(URL, tmp)
+api_stem = 'https://data.cityofchicago.org/api/views'
+URL = file.path(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
 
 suppressPackageStartupMessages(library(data.table))
-art = fread(tmp)
+art = fread(URL)
 
 # count art by geohash
 art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))
@@ -67,18 +65,17 @@ art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))
 ```
 
 ```
-##     geohash     N
-##      <char> <int>
-##  1:   dp3wm    46
-##  2:   dp3wn    42
-##  3:   dp3wt    16
-##  4:   dp3wq    13
-##  5:   dp3wk    10
-##  6:   dp3wj     9
-##  7:   dp3ty     9
-##  8:   dp3w7     8
-##  9:   dp3tw     6
-## 10:   dp3wu     4
+##     geohash  N
+##  1:   dp3wm 46
+##  2:   dp3wn 42
+##  3:   dp3wt 16
+##  4:   dp3wq 13
+##  5:   dp3wk 10
+##  6:   dp3wj  9
+##  7:   dp3ty  9
+##  8:   dp3w7  8
+##  9:   dp3tw  6
+## 10:   dp3wu  4
 ```
 
 This is pretty impractical _per se_ (where is `dp3wm`?); we'll return to this once we've introduced more functionality.
@@ -182,35 +179,34 @@ Returning to public art locations in Chicago, we can visualize the spatial aggre
 
 
 ```r
-# needed for plotting
-library(sp)
-# needed to load neighborhoods shapefile
-library(rgdal)
+library(sf)
 # for pretty coloring
 library(colourvalues)
 
 ## first, pull neighborhood shapefiles from https://data.cityofchicago.org
-tmpf = tempdir()
-tmp = tempfile(tmpdir = tmpf)
-shp_url = paste0(api_stem, '9wp7-iasj/files/',
-                 'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM',
-                 '?filename=Neighborhoods_2012.zip')
+tmp = tempfile(fileext = ".zip")
+shp_url = file.path(
+  api_stem, '9wp7-iasj/files',
+  'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM?filename=Neighborhoods_2012.zip'
+)
 download.file(shp_url, tmp)
-unzip(tmp, exdir = tmpf)
 
-chicago = readOGR(tmpf, 'Neighborhoods_2012b')
-# convert to lat/lon CRS
-chicago = spTransform(chicago, CRS('+init=epsg:4326'))
+chicago = paste0("/vsizip/", tmp) |>
+  st_read(quiet = TRUE) |>
+  st_transform(crs = 4326L)
 
-artSPDF = gh_to_spdf(
+artSF = gh_to_sf(
   art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
   gh_col = 'geohash'
 )
-plot(chicago, lwd = .5, main = 'Public Art Locations in Chicago')
-plot(artSPDF, col = color_values(artSPDF$N, alpha = 192), add = TRUE)
+plot(st_geometry(chicago), lwd = .5, main = 'Public Art Locations in Chicago')
+plot(artSF["N"], add = TRUE)
 ```
 
+<div class="figure">
 <img src="README-chicago_plot-1.png" alt="A viridis-color-scaled plot of Chicago overlaid with two types  of polygons: (1) the erose, semi-regular map of neighborhoods; and (2)  the regular, rectangular map of geohashes with public art. The salient  features of the plot are further described in the README body below." width="\textwidth" />
+<p class="caption">plot of chunk chicago_plot</p>
+</div>
 
 Chicago connoisseurs will recognize the biggest concentration around Lincoln Park, with another concentration along the waterfront near Millenium/Grant Parks.
 
