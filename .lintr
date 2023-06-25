@@ -10,6 +10,7 @@ linters: linters_with_defaults(
    expect_s4_class_linter(),
    expect_true_false_linter(),
    expect_type_linter(),
+   numeric_leading_zero_linter(),
    implicit_integer_linter(allow_colon = TRUE),
    indentation_linter(hanging_indent_style = "never"),
    infix_spaces_linter(exclude_operators = c("=", "*", "/")),

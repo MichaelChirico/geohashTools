@@ -57,9 +57,9 @@ suppressPackageStartupMessages(library(data.table))
 art = fread(URL)
 
 # count art by geohash
-art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))
-     # only show the top 10
-     ][order(-N)][1:10]
+gh_freq = art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))]
+# only show the top 10
+gh_freq[order(-N)][1:10]
 ```
 
 ```
@@ -178,27 +178,25 @@ Returning to public art locations in Chicago, we can visualize the spatial aggre
 
 ```r
 library(sf)
-# for pretty coloring
-library(colourvalues)
 
 ## first, pull neighborhood shapefiles from https://data.cityofchicago.org
-tmp = tempfile(fileext = ".zip")
+tmp = tempfile(fileext = '.zip')
 shp_url = file.path(
-  api_stem, '9wp7-iasj/files',
+  api_stem, '9wp7-iasj', 'files',
   'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM?filename=Neighborhoods_2012.zip'
 )
 download.file(shp_url, tmp)
 
-chicago = paste0("/vsizip/", tmp) |>
+chicago = paste0('/vsizip/', tmp) |>
   st_read(quiet = TRUE) |>
   st_transform(crs = 4326L)
 
 artSF = gh_to_sf(
-  art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
+  art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
   gh_col = 'geohash'
 )
-plot(st_geometry(chicago), lwd = .5, main = 'Public Art Locations in Chicago')
-plot(artSF["N"], add = TRUE)
+plot(st_geometry(chicago), lwd = 0.5, main = 'Public Art Locations in Chicago')
+plot(artSF['N'], add = TRUE)
 ```
 
 <div class="figure">
