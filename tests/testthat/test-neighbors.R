@@ -3,20 +3,20 @@ test_that('geohash adjacency list works', {
   ty_turtle_beach = 'sws374'
   xunantunich = 'd5095x0'
 
-  expect_equal(gh_neighbors(my_turtle_beach, self = FALSE),
+  expect_identical(gh_neighbors(my_turtle_beach, self = FALSE),
                list(southwest = 'w0znzr', south = 'w0znzx',
                     southeast = 'w0znzz', west = 'w0zpp2',
                     east = 'w0zppb', northwest = 'w0zpp3',
                     north = 'w0zpp9', northeast = 'w0zppc'))
   # commonwealthers *shakes fist*
-  expect_equal(gh_neighbours(my_turtle_beach, self = FALSE),
+  expect_identical(gh_neighbours(my_turtle_beach, self = FALSE),
                list(southwest = 'w0znzr', south = 'w0znzx',
                     southeast = 'w0znzz', west = 'w0zpp2',
                     east = 'w0zppb', northwest = 'w0zpp3',
                     north = 'w0zpp9', northeast = 'w0zppc'))
 
   # input precision doesn't matter; vectors work
-  expect_equal(gh_neighbors(c(my_turtle_beach, ty_turtle_beach, xunantunich),
+  expect_identical(gh_neighbors(c(my_turtle_beach, ty_turtle_beach, xunantunich),
                             self = FALSE),
                list(southwest = c('w0znzr', 'sws36c', 'd5095qz'),
                     south = c('w0znzx', 'sws371', 'd5095wb'),
@@ -30,7 +30,7 @@ test_that('geohash adjacency list works', {
   # global boundary geohashes
   #   include a northern geohash whose top-level parent has no neighbor but
   #   which has a neighbor at that precision, #14
-  expect_equal(gh_neighbors(c('5', 'u', 'pv', 'zry', 'z0'), self = FALSE),
+  expect_identical(gh_neighbors(c('5', 'u', 'pv', 'zry', 'z0'), self = FALSE),
                list(southwest = c(NA, 'e', 'ps', 'zrt', 'wz'),
                     south = c(NA, 's', 'pu', 'zrw', 'xp'),
                     southeast = c(NA, 't', '0h', 'zrx', 'xr'),
@@ -41,7 +41,7 @@ test_that('geohash adjacency list works', {
                     northeast = c('k', NA, '0n', NA, 'z3')))
 
   # option self = TRUE
-  expect_equal(gh_neighbors(my_turtle_beach),
+  expect_identical(gh_neighbors(my_turtle_beach),
                list(self = my_turtle_beach,
                     southwest = 'w0znzr', south = 'w0znzx',
                     southeast = 'w0znzz', west = 'w0zpp2',
@@ -50,7 +50,7 @@ test_that('geohash adjacency list works', {
 
   # edge cases: invalid input
   expect_error(gh_neighbors('a'), 'Invalid geohash', fixed = TRUE)
-  expect_equal(gh_neighbors(''),
+  expect_identical(gh_neighbors(''),
                list(self='', southwest=NA_character_, south=NA_character_,
                     southeast=NA_character_, west=NA_character_,
                     east=NA_character_, northwest=NA_character_,
