@@ -26,8 +26,10 @@ The geohash system is useful for indexing or aggregating point data with latitud
 ### Precision of geohashes
 
 ```{r precision_table,  message=FALSE, warning=FALSE,  echo=FALSE}
-data.frame(`Geohash Length` = c(1:8),
-  `KM error`= c(2500, 630, 78, 20, 2.4, 0.61, 0.076, 0.019))
+data.frame(
+  `Geohash Length` = 1:8,
+  `KM error`= c(2500.0, 630.0, 78.0, 20.0, 2.4, 0.61, 0.076, 0.019)
+)
 ```
 
 ## Encoding geohashes
@@ -53,8 +55,8 @@ We can use this as a simple, regular level of spatial aggregation for spatial po
 
 ```{r}
 coords = data.frame(
-  x=rnorm(20),
-  y=rnorm(20)
+  x=rnorm(20L),
+  y=rnorm(20L)
 )
 gh <- gh_encode(coords$x, coords$y)
 gh
@@ -129,7 +131,7 @@ if (!requireNamespace('ggplot2', quietly = TRUE)) {
 library(ggplot2)
 
 data(meuse, package = 'sp')
-meuse_sf = st_as_sf(meuse, coords = c('x', 'y'), crs = 28992, agr = 'constant')
+meuse_sf = st_as_sf(meuse, coords = c('x', 'y'), crs = 28992L, agr = 'constant')
 meuse_sf <- st_transform(meuse_sf, crs = 4326L)
 
 ggplot() +

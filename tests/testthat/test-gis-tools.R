@@ -9,7 +9,7 @@ test_that('gh_to_sp works', {
 
   expect_is(ghSP, 'SpatialPolygons')
   expect_length(ghSP, 9L)
-  expect_equal(sapply(ghSP@polygons, slot, 'ID'), mauritius)
+  expect_equal(vapply(ghSP@polygons, slot, 'ID', FUN.VALUE = character(1L)), mauritius)
   expect_equal(ghSP['mk2u', ]@polygons[[1L]]@Polygons[[1L]]@coords,
                matrix(c(57.3046875, 57.3046875, 57.65625, 57.65625,
                         57.3046875, -20.390625, -20.21484375,
@@ -33,7 +33,7 @@ test_that('gh_to_spdf.default works', {
 
   expect_is(ghSPDF, 'SpatialPolygonsDataFrame')
   expect_length(ghSPDF, 9L)
-  expect_equal(sapply(ghSPDF@polygons, slot, 'ID'), urumqi)
+  expect_equal(vapply(ghSPDF@polygons, slot, 'ID', FUN.VALUE = character(1L)), urumqi)
   expect_equal(ghSPDF['tzy2', ]@polygons[[1L]]@Polygons[[1L]]@coords,
                matrix(c(87.5390625, 87.5390625, 87.890625,
                         87.890625, 87.5390625, 43.59375, 43.76953125,
@@ -62,7 +62,7 @@ test_that('gh_to_spdf.data.frame works', {
 
   expect_is(ghSPDF, 'SpatialPolygonsDataFrame')
   expect_length(ghSPDF, 9L)
-  expect_equal(sapply(ghSPDF@polygons, slot, 'ID'), urumqi)
+  expect_equal(vapply(ghSPDF@polygons, slot, 'ID', FUN.VALUE = character(1L)), urumqi)
   expect_equal(ghSPDF['tzy2', ]@polygons[[1L]]@Polygons[[1L]]@coords,
                matrix(c(87.5390625, 87.5390625, 87.890625,
                         87.890625, 87.5390625, 43.59375, 43.76953125,
@@ -121,7 +121,7 @@ test_that('gh_covering works', {
   wgs = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
   sp::proj4string(banjarmasin) = wgs
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
-  expect_true(!any(is.na(sp::over(banjarmasin, banjarmasin_cover))))
+  expect_false(anyNA(sp::over(banjarmasin, banjarmasin_cover)))
   expect_equal(sort(rownames(banjarmasin_cover@data))[1:10],
                c('qx3kzj', 'qx3kzm', 'qx3kzn', 'qx3kzp', 'qx3kzq',
                  'qx3kzr', 'qx3kzt', 'qx3kzv', 'qx3kzw', 'qx3kzx'))
@@ -165,8 +165,9 @@ test_that('gh_covering_sf works', {
   sf::st_crs(banjarmasin) = sf::st_crs(4326L)
   banjarmasin = sf::st_transform(banjarmasin, sf::st_crs(banjarmasin_cover))
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
-  expect_true(!anyNA(sapply(sf::st_intersects(banjarmasin, banjarmasin_cover),
-                            function(z) if (length(z) == 0L) NA_integer_ else z[1L])))
+  expect_false(anyNA(vapply(sf::st_intersects(banjarmasin, banjarmasin_cover),
+                            function(z) if (length(z) == 0L) NA_integer_ else z[1L],
+                            integer(1L))))
   expect_equal(sort(rownames(banjarmasin_cover))[1:10],
                c('qx3kzj', 'qx3kzm', 'qx3kzn', 'qx3kzp', 'qx3kzq',
                  'qx3kzr', 'qx3kzt', 'qx3kzv', 'qx3kzw', 'qx3kzx'))

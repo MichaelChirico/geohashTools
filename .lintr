@@ -1,7 +1,14 @@
 linters: linters_with_defaults(
+   any_is_na_linter(),
+   expect_not_linter(),
+   implicit_integer_linter(allow_colon = TRUE),
+   infix_spaces_linter(exclude_operators = c("=", "*", "/")),
    line_length_linter(120),
    quotes_linter("'"),
-   infix_spaces_linter(exclude_operators = c("=", "*", "/")),
+   undesirable_function_linter(modify_defaults(
+     default_undesirable_functions,
+     library = NULL
+   )),
    assignment_linter = NULL,
    commented_code_linter = NULL,
    indentation_linter = NULL,

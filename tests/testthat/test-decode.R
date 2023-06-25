@@ -104,7 +104,7 @@ test_that('geohash decoder works', {
   expect_equal(gh_decode(''),
                list(latitude = NA_real_, longitude = NA_real_))
   ## long input [intr_length > 8 in geohash_decode_impl]
-  expect_equal(gh_decode(paste(rep('1', 26L), collapse = '')),
+  expect_equal(gh_decode(strrep('1', 26L)),
                list(latitude = -84.1935483870968,
                     longitude = -133.548387117729))
 
@@ -112,7 +112,7 @@ test_that('geohash decoder works', {
   ##   useBytes needed a bit strangely -- that the error returns with _any_
   ##     non-ASCII character throws off the string matching even when only
   ##     attempting to match ASCII-only characters.
-  expect_error(gh_decode(rawToChar(as.raw(128))),
+  expect_error(gh_decode(rawToChar(as.raw(128L))),
                fixed = TRUE, useBytes = TRUE,
                'Non-ASCII character at index 1')
 })

@@ -22,8 +22,8 @@ gh_to_sp = function(geohashes) {
   sp::SpatialPolygons(lapply(seq_along(gh), function(ii) {
     with(gh_xy, sp::Polygons(list(sp::Polygon(cbind(
       # the four corners of the current geohash
-      longitude[ii] + c(-1, -1, 1, 1, -1) * delta_longitude[ii],
-      latitude[ii] + c(-1, 1, 1, -1, -1) * delta_latitude[ii]
+      longitude[ii] + c(-1.0, -1.0, 1.0, 1.0, -1.0) * delta_longitude[ii],
+      latitude[ii] + c(-1.0, 1.0, 1.0, -1.0, -1.0) * delta_latitude[ii]
     ))), ID = gh[ii]))
     # gh_decode returns values in WSG 84
   }), proj4string = wgs())
@@ -74,7 +74,7 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
   if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
     SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
-  delta = 2 * gh_delta(precision)
+  delta = 2.0 * gh_delta(precision)
   # TODO: actually goes through an encode-decode cycle -- more efficient to
   #   just build the cells directly by rounding to the precision's grid
   gh = with(expand.grid(
