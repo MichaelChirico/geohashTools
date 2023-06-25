@@ -1,5 +1,3 @@
-context('GIS tools')
-
 test_that('gh_to_sp works', {
   skip_if_not_installed('sp')
   mauritius = c('mk2u', 'mk2e', 'mk2g', 'mk35', 'mk3h',

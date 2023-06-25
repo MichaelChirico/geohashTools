@@ -14,10 +14,11 @@ Imports:
 Suggests: 
     sf,
     sp,
-    testthat,
+    testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     ggplot2
+testthat/config/edition: 3
 VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.2.3

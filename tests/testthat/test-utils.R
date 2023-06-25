@@ -1,5 +1,3 @@
-context('Geohash utilities')
-
 test_that('gh_delta works', {
   expect_equal(gh_delta(0L), c(90.0, 180.0))
 

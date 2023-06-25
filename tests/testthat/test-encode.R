@@ -1,5 +1,3 @@
-context('Geohash encoder')
-
 test_that('geohash encoder works', {
   y = 0.1234
   x = 5.6789

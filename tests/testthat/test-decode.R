@@ -1,5 +1,3 @@
-context('Geohash decoder')
-
 test_that('geohash decoder works', {
   borobudur = 'qqwkex'
   akarenga = 'xpkjd5'

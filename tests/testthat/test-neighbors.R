@@ -1,5 +1,3 @@
-context('Geohash neighborhood')
-
 test_that('geohash adjacency list works', {
   my_turtle_beach = 'w0zpp8'
   ty_turtle_beach = 'sws374'
