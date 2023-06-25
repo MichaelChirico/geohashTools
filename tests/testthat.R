@@ -1,4 +1,4 @@
 library(testthat)
 library(geohashTools)
 
-test_check("geohashTools")
+test_check('geohashTools')

@@ -7,6 +7,3 @@ linters: linters_with_defaults(
    indentation_linter = NULL,
    object_name_linter = NULL
  )
-exclusions: list(
-   'tests'
- )

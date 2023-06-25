@@ -1,13 +1,14 @@
 context('Geohash encoder')
 
 test_that('geohash encoder works', {
-  y = 0.1234; x = 5.6789
+  y = 0.1234
+  x = 5.6789
   # test defaults on scalar input
   expect_equal(gh_encode(y, x), 's0h09n')
   expect_equal(gh_encode(-y, -x), '7zgzqc')
 
   # longitude wraps around every 360 degrees
-  expect_equal(gh_encode(y, x), gh_encode(y, x-360))
+  expect_equal(gh_encode(y, x), gh_encode(y, x - 360))
 
   # all level-1 centroids to be sure my manual logic for precision = 1 works
   expect_equal(gh_encode(c(-67.5, -67.5, -22.5, -22.5, -67.5, -67.5, -22.5,
@@ -21,9 +22,9 @@ test_that('geohash encoder works', {
                            67.5, 112.5, 157.5, 112.5, 157.5, 22.5, 67.5,
                            22.5, 67.5, 112.5, 157.5, 112.5, 157.5),
                          precision = 1L),
-               c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "b", "c",
-                 "d", "e", "f", "g", "h", "j", "k", "m", "n", "p", "q", "r",
-                 "s", "t", "u", "v", "w", "x", "y", "z"))
+               c('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c',
+                 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r',
+                 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'))
 
   # geohash cells are _left closed, right open_: [x1, x2) x [y1, y2), see:
   #   http://geohash.org/s000
@@ -36,8 +37,8 @@ test_that('geohash encoder works', {
                            90 - eps, 90 - eps, eps - 90, eps - 90),
                          c(eps, -eps, eps, -eps,
                            eps - 180, 180 - eps, eps - 180, 180 - eps)),
-               c("s00000", "ebpbpb", "kpbpbp", "7zzzzz",
-                 "bpbpbp", "zzzzzz", "000000", "pbpbpb"))
+               c('s00000', 'ebpbpb', 'kpbpbp', '7zzzzz',
+                 'bpbpbp', 'zzzzzz', '000000', 'pbpbpb'))
 
   # test precision argument
   expect_equal(gh_encode(y, x, 12L), 's0h09nrnzgqv')
@@ -46,7 +47,7 @@ test_that('geohash encoder works', {
   expect_equal(gh_encode(y, x, n),
                substring('s0h09nrnzgqv8je0f4jpd0000', 1L, n))
   # truncation beyond there
-  expect_warning(out <- gh_encode(y, x, n+5L),
+  expect_warning(out <- gh_encode(y, x, n + 5L),
                  'Precision is limited', fixed = TRUE)
   expect_equal(out, substring('s0h09nrnzgqv8je0f4jpd0000', 1L, n))
 
