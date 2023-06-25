@@ -131,10 +131,10 @@ test_that('geohash decoder works', {
     tolerance = 1e-8
   )
   # be sure adjacent geohashes interlock
-  expect_identical(lapply(c('nw', 'n', 'ne'),
-                      function(l) gh_decode('m', coord_loc = l)),
-               lapply(c('sw', 's', 'se'),
-                      function(l) gh_decode('t', coord_loc = l)))
+  expect_identical(
+    lapply(c('nw', 'n', 'ne'), function(l) gh_decode('m', coord_loc = l)),
+    lapply(c('sw', 's', 'se'), function(l) gh_decode('t', coord_loc = l))
+  )
 
   expect_error(
     gh_decode(c(borobudur, neum), coord_loc = c('n', 's')),
@@ -148,28 +148,43 @@ test_that('geohash decoder works', {
   )
 
   # invalid geohash characters:
-  expect_error(gh_decode('a'), fixed = TRUE,
-               "Invalid geohash; check 'a' at index 1.")
-  expect_error(gh_decode(c('b', 'a')), fixed = TRUE,
-               "Invalid geohash; check 'a' at index 2.")
+  expect_error(
+    gh_decode('a'),
+    "Invalid geohash; check 'a' at index 1.",
+    fixed = TRUE
+  )
+  expect_error(
+    gh_decode(c('b', 'a')),
+    "Invalid geohash; check 'a' at index 2.",
+    fixed = TRUE
+  )
 
   # missing input
-  expect_identical(gh_decode(c(neum, NA_character_)),
-               list(latitude = c(42.91259765625, NA),
-                    longitude = c(17.60009765625, NA)))
-  expect_identical(gh_decode(c(neum, NA_character_), include_delta = TRUE),
-               list(latitude = c(42.91259765625, NA),
-                    longitude = c(17.60009765625, NA),
-                    delta_latitude = c(0.02197265625, NA),
-                    delta_longitude = c(0.02197265625, NA)))
+  expect_identical(
+    gh_decode(c(neum, NA_character_)),
+    list(latitude = c(42.91259765625, NA), longitude = c(17.60009765625, NA))
+  )
+  expect_identical(
+    gh_decode(c(neum, NA_character_), include_delta = TRUE),
+    list(
+      latitude = c(42.91259765625, NA),
+      longitude = c(17.60009765625, NA),
+      delta_latitude = c(0.02197265625, NA),
+      delta_longitude = c(0.02197265625, NA)
+    )
+  )
 
   # stress testing
   ## empty input
-  expect_identical(gh_decode(character(0L)),
-               list(latitude = numeric(0L), longitude = numeric(0L)))
+  expect_identical(
+    gh_decode(character(0L)),
+    list(latitude = numeric(0L), longitude = numeric(0L))
+  )
   ## !nzchar input
-  expect_identical(gh_decode(''),
-               list(latitude = NA_real_, longitude = NA_real_))
+  expect_identical(
+    gh_decode(''),
+    list(latitude = NA_real_, longitude = NA_real_)
+  )
   ## long input [intr_length > 8 in geohash_decode_impl]
   expect_identical(
     gh_decode(strrep('1', 26L)),
@@ -181,7 +196,9 @@ test_that('geohash decoder works', {
   ##   useBytes needed a bit strangely -- that the error returns with _any_
   ##     non-ASCII character throws off the string matching even when only
   ##     attempting to match ASCII-only characters.
-  expect_error(gh_decode(rawToChar(as.raw(128L))),
-               fixed = TRUE, useBytes = TRUE,
-               'Non-ASCII character at index 1')
+  expect_error(
+    gh_decode(rawToChar(as.raw(128L))),
+    'Non-ASCII character at index 1',
+    fixed = TRUE, useBytes = TRUE
+  )
 })

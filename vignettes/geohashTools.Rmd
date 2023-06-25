@@ -114,8 +114,10 @@ merlion_nbhd <- gh_to_sf(merlion_ghs)
 
 # Example plot of geohashes neighbouring w21z74
 plot(merlion_nbhd, col = NA, reset = FALSE, key.pos = NULL)
-text(st_coordinates(st_centroid(merlion_nbhd)),
-     labels = row.names(merlion_nbhd))
+text(
+  st_coordinates(st_centroid(merlion_nbhd)),
+  labels = row.names(merlion_nbhd)
+)
 ```
 
 ### gh_covering

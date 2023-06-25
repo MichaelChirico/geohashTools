@@ -11,6 +11,7 @@ linters: linters_with_defaults(
    expect_true_false_linter(),
    expect_type_linter(),
    implicit_integer_linter(allow_colon = TRUE),
+   indentation_linter(hanging_indent_style = "never"),
    infix_spaces_linter(exclude_operators = c("=", "*", "/")),
    line_length_linter(120),
    quotes_linter("'"),
@@ -20,6 +21,5 @@ linters: linters_with_defaults(
    )),
    assignment_linter = NULL,
    commented_code_linter = NULL,
-   indentation_linter = NULL,
    object_name_linter = NULL
  )

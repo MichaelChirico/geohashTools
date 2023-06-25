@@ -4,8 +4,7 @@ wgs = function() sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
 # nocov start
 check_suggested = function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop('This function requires an installation of ', pkg,
-         "; install.packages('", pkg, "') to proceed.")
+    stop('This function requires an installation of ', pkg, "; install.packages('", pkg, "') to proceed.")
   }
 }
 # nocov end
@@ -48,8 +47,7 @@ gh_to_spdf.default = function(geohashes, ...) {
 
 gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   if (is.na(idx <- match(gh_col, names(gh_df))))
-    stop('Searched for geohashes at a column named "',
-         gh_col, '", but found nothing.')
+    stop('Searched for geohashes at a column named "', gh_col, '", but found nothing.')
   gh = gh_df[[idx]]
   if (anyDuplicated(gh) > 0L) {
     idx = which(duplicated(gh))
