@@ -1,0 +1,26 @@
+linters: linters_with_defaults(
+   any_is_na_linter(),
+   expect_comparison_linter(),
+   expect_identical_linter(),
+   expect_length_linter(),
+   expect_named_linter(),
+   expect_not_linter(),
+   expect_null_linter(),
+   expect_s3_class_linter(),
+   expect_s4_class_linter(),
+   expect_true_false_linter(),
+   expect_type_linter(),
+   numeric_leading_zero_linter(),
+   implicit_integer_linter(allow_colon = TRUE),
+   indentation_linter(hanging_indent_style = "never"),
+   infix_spaces_linter(exclude_operators = c("=", "*", "/")),
+   line_length_linter(120),
+   quotes_linter("'"),
+   undesirable_function_linter(modify_defaults(
+     default_undesirable_functions,
+     library = NULL
+   )),
+   assignment_linter = NULL,
+   commented_code_linter = NULL,
+   object_name_linter = NULL
+ )

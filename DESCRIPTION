@@ -1,5 +1,5 @@
 Package: geohashTools
-Version: 0.3.1
+Version: 0.3.2.9999
 Title: Tools for Working with Geohashes
 Authors@R: c(
   person('Michael', 'Chirico', role = c('aut', 'cre'), email = 'MichaelChirico4@gmail.com'),
@@ -9,13 +9,16 @@ Depends: R (>= 3.0.0)
 Description: Tools for working with Gustavo Niemeyer's geohash coordinate system, including API for interacting with other common R GIS libraries.
 URL: https://github.com/MichaelChirico/geohashTools
 License: MPL-2.0 | file LICENSE
+Imports:
+    methods
 Suggests: 
-    rgdal,
     sf,
     sp,
-    testthat,
+    testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     ggplot2
+Config/testthat/edition: 3
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0.9000
+Encoding: UTF-8
+RoxygenNote: 7.2.3

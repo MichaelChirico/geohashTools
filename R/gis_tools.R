@@ -1,11 +1,10 @@
 # https://epsg.io/4326
-wgs = function() sp::CRS("+proj=longlat +datum=WGS84", doCheckCRSArgs = FALSE)
+wgs = function() sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
 
 # nocov start
 check_suggested = function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop("This function requires an installation of ", pkg,
-         "; install.packages('", pkg, "') to proceed.")
+    stop('This function requires an installation of ', pkg, "; install.packages('", pkg, "') to proceed.")
   }
 }
 # nocov end
@@ -15,15 +14,15 @@ gh_to_sp = function(geohashes) {
   gh = tolower(geohashes)
   if (anyDuplicated(gh) > 0L) {
     idx = which(duplicated(gh))
-    warning("Detected ", length(idx), " duplicate input geohashes; removing")
+    warning('Detected ', length(idx), ' duplicate input geohashes; removing')
     gh = gh[-idx]
   }
   gh_xy = gh_decode(gh, include_delta = TRUE)
   sp::SpatialPolygons(lapply(seq_along(gh), function(ii) {
     with(gh_xy, sp::Polygons(list(sp::Polygon(cbind(
       # the four corners of the current geohash
-      longitude[ii] + c(-1, -1, 1, 1, -1) * delta_longitude[ii],
-      latitude[ii] + c(-1, 1, 1, -1, -1) * delta_latitude[ii]
+      longitude[ii] + c(-1.0, -1.0, 1.0, 1.0, -1.0) * delta_longitude[ii],
+      latitude[ii] + c(-1.0, 1.0, 1.0, -1.0, -1.0) * delta_latitude[ii]
     ))), ID = gh[ii]))
     # gh_decode returns values in WSG 84
   }), proj4string = wgs())
@@ -37,7 +36,7 @@ gh_to_spdf = function(...) {
 gh_to_spdf.default = function(geohashes, ...) {
   if (anyDuplicated(geohashes) > 0L) {
     idx = which(duplicated(geohashes))
-    warning("Detected ", length(idx), " duplicate input geohashes; removing")
+    warning('Detected ', length(idx), ' duplicate input geohashes; removing')
     geohashes = geohashes[-idx]
   }
   sp::SpatialPolygonsDataFrame(
@@ -48,12 +47,11 @@ gh_to_spdf.default = function(geohashes, ...) {
 
 gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   if (is.na(idx <- match(gh_col, names(gh_df))))
-    stop('Searched for geohashes at a column named "',
-         gh_col, '", but found nothing.')
+    stop('Searched for geohashes at a column named "', gh_col, '", but found nothing.')
   gh = gh_df[[idx]]
   if (anyDuplicated(gh) > 0L) {
     idx = which(duplicated(gh))
-    warning("Detected ", length(idx), " duplicate input geohashes; removing")
+    warning('Detected ', length(idx), ' duplicate input geohashes; removing')
     gh = gh[-idx]
     gh_df = gh_df[-idx, , drop = FALSE]
   }
@@ -62,20 +60,19 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
-gh_covering = function (SP, precision = 6L, minimal = FALSE)
-{
-  check_suggested("sp")
-  if (sf_input <- inherits(SP, "sf")) {
-    check_suggested("sf")
+gh_covering = function(SP, precision = 6L, minimal = FALSE) {
+  check_suggested('sp')
+  if (sf_input <- inherits(SP, 'sf')) {
+    check_suggested('sf')
     SP = sf::as_Spatial(SP)
   }
-  if (!inherits(SP, "Spatial"))
-    stop("Object to cover must be Spatial (or subclass)")
+  if (!inherits(SP, 'Spatial'))
+    stop('Object to cover must be Spatial (or subclass)')
   # sp::over behaves poorly with 0-column input
   if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
     SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
-  delta = 2 * gh_delta(precision)
+  delta = 2.0 * gh_delta(precision)
   # TODO: actually goes through an encode-decode cycle -- more efficient to
   #   just build the cells directly by rounding to the precision's grid
   gh = with(expand.grid(
@@ -83,12 +80,14 @@ gh_covering = function (SP, precision = 6L, minimal = FALSE)
     longitude = seq(bb[1L, 'min'], bb[1L, 'max'] + delta[2L], by = delta[2L])
   ), gh_encode(latitude, longitude, precision))
   if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs())
-  cover = sp::spTransform(gh_to_spdf(gh), prj4)
+  cover = methods::as(gh_to_sf(gh), 'Spatial')
+  sp::proj4string(cover) = prj4
   if (minimal) {
     # slightly more efficient to use rgeos, but there's a bug preventing
     #   that version from working (reported 2019-08-16):
     #   cover[c(rgeos::gIntersects(cover, SP, byid = c(TRUE, FALSE))), ]
-    cover = cover[which(sapply(sp::over(cover, SP, returnList=TRUE), NROW) > 0L), ]
+    n_in_cover = vapply(sp::over(cover, SP, returnList=TRUE), NROW, integer(1L))
+    cover = cover[which(n_in_cover > 0L), ]
     sp::proj4string(cover) = prj4
   }
   return(if (sf_input) sf::st_as_sf(cover) else cover)

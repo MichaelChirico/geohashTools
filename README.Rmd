@@ -1,7 +1,5 @@
 ---
-output:
-  github_document:
-    html_preview: false
+output: github_document
 ---
 
 ```{r, echo = FALSE}
@@ -16,19 +14,16 @@ knitr::opts_chunk$set(
 # `geohashTools`
 
 ```{r, results = 'asis', echo = FALSE}
-pkg = 'geohashTools'
-repo = sprintf('MichaelChirico/%s', pkg)
-cc = sprintf('http://codecov.io/github/%s', repo)
-tr = sprintf('https://travis-ci.org/%s', repo)
-cn_img = sprintf('https://cranchecks.info/badges/flavor/release/%s', pkg)
-cn_lnk = 
-  sprintf('https://cran.r-project.org/web/checks/check_results_%s.html', pkg)
-
-cat('![logo](logo.png "geohashTools") ',
-    '[![codecov](', cc, '/coverage.svg?branch=master)](', cc, '?branch=master) ',
-    '[![travis](',  tr, '.svg?branch=master)](', tr, ') ', 
-    '[![cran_chk](', cn_img, ')](', cn_lnk, ') ' ,
-    sep = '')
+local({
+  pkg = 'geohashTools'
+  repo = file.path('MichaelChirico', pkg)
+  cat(sprintf('
+![logo](logo.png "%1$s")
+[![codecov](https://codecov.io/gh/%2$s/branch/master/graph/badge.svg)](https://app.codecov.io/gh/%2$s?branch=master)
+[![Build Status](https://app.travis-ci.com/%2$s.svg?branch=master)](https://app.travis-ci.com/%2$s)
+[![CRAN status](https://www.r-pkg.org/badges/version/%1$s)](https://cran.r-project.org/package=%1$s)
+', pkg, repo))
+})
 ```
 
 This package provides tools for working with [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer)'s [geohash](https://en.wikipedia.org/wiki/Geohash) system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively.
@@ -58,18 +53,16 @@ We can use this as a simple, regular level of spatial aggregation for spatial po
 
 ```{r chicago_art}
 ## first, pull the data internally from https://data.cityofchicago.org
-tmp = tempfile(fileext = 'csv')
-api_stem = 'https://data.cityofchicago.org/api/views/'
-URL = paste0(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
-download.file(URL, tmp)
+api_stem = 'https://data.cityofchicago.org/api/views'
+URL = file.path(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
 
-library(data.table)
-art = fread(tmp)
+suppressPackageStartupMessages(library(data.table))
+art = fread(URL)
 
 # count art by geohash
-art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))
-     # only show the top 10
-     ][order(-N)][1:10]
+gh_freq = art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))]
+# only show the top 10
+gh_freq[order(-N)][1:10]
 ```
 
 This is pretty impractical _per se_ (where is `dp3wm`?); we'll return to this once we've introduced more functionality.
@@ -88,7 +81,7 @@ It can also be helpful to know just how precisely we've identified these coordin
 gh_decode('sc54v', include_delta = TRUE)
 ```
 
-In terms of latitude and longitude, all geohashes with the same precision have the same dimensions (though the physical size of the "rectangle" changes depending on the latitude); as such it's easy to figure out thecell half-widths from the precision alone using `gh_delta`:
+In terms of latitude and longitude, all geohashes with the same precision have the same dimensions (though the physical size of the "rectangle" changes depending on the latitude); as such it's easy to figure out the cell half-widths from the precision alone using `gh_delta`:
 
 ```{r gh_delta}
 gh_delta(5L)
@@ -98,7 +91,7 @@ gh_delta(5L)
 
 One unfortunate consequence of the geohash system is that, while geohashes that are lexicographically similar (e.g. `wxyz01` and `wxyz12`) are certainly close to one another, the converse is not true -- for example, `7gxyru` and `k58n2h` are neighbors! Put another way, small movements on the globe occasionally have visually huge jumps in the geohash-encoded output.
 
-Fret not -- one tool for helping overcome this is the `gh_neighbors` function (`gh_neighbours` is also registered, for the Commonwealthy among us), which will return all of the geohashes adjacent to a given geohash (or vector of geohashes) at the same level of precision. 
+Fret not -- one tool for helping overcome this is the `gh_neighbors` function (`gh_neighbours` is also registered, for the Commonwealthy among us), which will return all of the geohashes adjacent to a given geohash (or vector of geohashes) at the same level of precision.
 
 For example, the Merlion statue in Singapore is roughly at `w21z74nz`, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:
 
@@ -112,33 +105,36 @@ gh_neighbors('w21z74nz')
 
 Returning to public art locations in Chicago, we can visualize the spatial aggregations carried out above by converting to `sp`, combining with a shapefile of Chicago, and plotting:
 
-```{r chicago_plot, message = FALSE, results = 'hide', fig.width = 8, fig.height = 8, out.width = '\\textwidth'}
-# needed for plotting
-library(sp)
-# needed to load neighborhoods shapefile
-library(rgdal)
-# for pretty coloring
-library(colourvalues)
+```{r chicago_plot}
+#| message = FALSE,
+#| results = 'hide',
+#| fig.alt = 'A viridis-color-scaled plot of Chicago overlaid with two types
+#|   of polygons: (1) the erose, semi-regular map of neighborhoods; and (2)
+#|   the regular, rectangular map of geohashes with public art. The salient
+#|   features of the plot are further described in the README body below.',
+#| fig.width = 8,
+#| fig.height = 8,
+#| out.width = '\\textwidth'
+library(sf)
 
 ## first, pull neighborhood shapefiles from https://data.cityofchicago.org
-tmpf = tempdir()
-tmp = tempfile(tmpdir = tmpf)
-shp_url = paste0(api_stem, '9wp7-iasj/files/', 
-                 'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM',
-                 '?filename=Neighborhoods_2012.zip')
+tmp = tempfile(fileext = '.zip')
+shp_url = file.path(
+  api_stem, '9wp7-iasj', 'files',
+  'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM?filename=Neighborhoods_2012.zip'
+)
 download.file(shp_url, tmp)
-unzip(tmp, exdir = tmpf)
 
-chicago = readOGR(tmpf, 'Neighborhoods_2012b')
-# convert to lat/lon CRS
-chicago = spTransform(chicago, CRS('+init=epsg:4326'))
+chicago = paste0('/vsizip/', tmp) |>
+  st_read(quiet = TRUE) |>
+  st_transform(crs = 4326L)
 
-artSPDF = gh_to_spdf(
-  art[ , .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
+artSF = gh_to_sf(
+  art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
   gh_col = 'geohash'
 )
-plot(chicago, lwd = .5, main = 'Public Art Locations in Chicago')
-plot(artSPDF, col = color_values(artSPDF$N, alpha = 192), add = TRUE)
+plot(st_geometry(chicago), lwd = 0.5, main = 'Public Art Locations in Chicago')
+plot(artSF['N'], add = TRUE)
 ```
 
 Chicago connoisseurs will recognize the biggest concentration around Lincoln Park, with another concentration along the waterfront near Millenium/Grant Parks.
@@ -150,4 +146,4 @@ The process for `sf` is similar; just replace `gh_to_spdf` with `gh_to_sf`.
 You might get benefit out of these more interactive online tools for working with geohashes:
 
   - http://www.movable-type.co.uk/scripts/geohash.html
-  - http://geohash.gofreerange.com/
+  - https://gofreerange.com/geohash-explorer

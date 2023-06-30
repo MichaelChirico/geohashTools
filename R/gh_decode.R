@@ -1,7 +1,9 @@
 gh_decode = function(geohashes, include_delta = FALSE, coord_loc = 'c') {
   if (is.factor(geohashes)) {
-    return(lapply(gh_decode(levels(geohashes), include_delta, coord_loc),
-                  function(z) z[geohashes]))
+    return(lapply(
+      gh_decode(levels(geohashes), include_delta, coord_loc),
+      function(z) z[geohashes]
+    ))
   }
   if (length(coord_loc) > 1L)
     stop("Please provide only one value for 'coord_loc'")
@@ -16,8 +18,7 @@ gh_decode = function(geohashes, include_delta = FALSE, coord_loc = 'c') {
     'northwest' = , 'nw' = 6L,
     'north' = , 'n' = 7L,
     'northeast' = , 'ne' = 8L,
-    stop('Unrecognized coordinate location; please use ',
-         "'c' for centroid or a cardinal direction; see ?gh_decode")
+    stop("Unrecognized coordinate location; please use 'c' for centroid or a cardinal direction; see ?gh_decode")
   )
   .Call(Cgh_decode, geohashes, include_delta, coord_loc)
 }
