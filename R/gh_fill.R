@@ -1,9 +1,3 @@
-#' Fill geohash prefix with members
-#'
-#' @param geohashes Character vector of input geohashes. They must all be of same precision
-#' @param precision Positive integer scalar controlling the 'zoom level' – how many characters should be used in the output.
-#' @return Character vector of geohashes corresponding to the input.
-#' @export
 gh_fill <- function(geohashes, precision) {
   if (length(unique(nchar(geohashes))) > 1) {
     stop("Input Geohashes must all have the same precision level.")
