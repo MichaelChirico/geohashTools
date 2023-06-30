@@ -31,4 +31,5 @@ test_that('gh_fill works', {
 
   # Only Valid Characters
   expect_error(gh_fill("i9", 3L), 'Invalid Geohash; Valid characters: [0123456789bcdefghjkmnpqrstuvwxyz](any case)', fixed = TRUE)
+
 })
