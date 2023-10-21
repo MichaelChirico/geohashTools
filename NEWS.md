@@ -1,5 +1,9 @@
 # `geohashTools` NEWS
 
+## v0.3.3
+
+Drop references to deprecated rgdal.
+
 ## v0.3.2
 
 ### BUG FIXES
