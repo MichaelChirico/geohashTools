@@ -43,37 +43,31 @@ gh_encode(11.3113917, -74.0779006, precision = 5L)
 ## [1] "d6526"
 ```
 
+<!-- TODO(michaelchirico): restore this. Site appears to be down as of this CRAN submission, seemingly temporarily -->
+
 ### Public Art in Chicago
 
-We can use this as a simple, regular level of spatial aggregation for spatial points data, e.g., counting presence of public art throughout the city of Chicago, as captured in [this dataset](https://data.cityofchicago.org/Parks-Recreation/Parks-Public-Art/sj6t-9cju) provided by the City:
+We can use this as a simple, regular level of spatial aggregation for spatial points data, e.g., counting presence of public art throughout the city of Chicago, as captured in a dataset
+
+<!-- http s://data.cityofchicago.org/Parks-Recreation/Parks-Public-Art/sj6t-9cju -->
+
+provided by the City:
+
+NB: As of this writing, the Chicago data portal is down, apparently temporarily. However I'd like to submit this package update to CRAN in order to avoid deprecation issues around {rgdal} & co, so please check back on the website for a working version of the code below.
 
 
 ```r
 ## first, pull the data internally from https://data.cityofchicago.org
-api_stem = 'https://data.cityofchicago.org/api/views'
-URL = file.path(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
+# api_stem = 'https://data.cityofchicago.org/api/views'
+# URL = file.path(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
 
-suppressPackageStartupMessages(library(data.table))
-art = fread(URL)
+# suppressPackageStartupMessages(library(data.table))
+# art = fread(URL)
 
 # count art by geohash
-gh_freq = art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))]
+# gh_freq = art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 5L))]
 # only show the top 10
-gh_freq[order(-N)][1:10]
-```
-
-```
-##     geohash  N
-##  1:   dp3wm 46
-##  2:   dp3wn 42
-##  3:   dp3wt 16
-##  4:   dp3wq 13
-##  5:   dp3wk 10
-##  6:   dp3wj  9
-##  7:   dp3ty  9
-##  8:   dp3w7  8
-##  9:   dp3tw  6
-## 10:   dp3wu  4
+# gh_freq[order(-N)][1:10]
 ```
 
 This is pretty impractical _per se_ (where is `dp3wm`?); we'll return to this once we've introduced more functionality.
@@ -180,29 +174,24 @@ Returning to public art locations in Chicago, we can visualize the spatial aggre
 library(sf)
 
 ## first, pull neighborhood shapefiles from https://data.cityofchicago.org
-tmp = tempfile(fileext = '.zip')
-shp_url = file.path(
-  api_stem, '9wp7-iasj', 'files',
-  'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM?filename=Neighborhoods_2012.zip'
-)
-download.file(shp_url, tmp)
+# tmp = tempfile(fileext = '.zip')
+# shp_url = file.path(
+#   api_stem, '9wp7-iasj', 'files',
+#   'TMTPQ_MTmUDEpDGCLt_B1uaiJmwhCKZ729Ecxq6BPfM?filename=Neighborhoods_2012.zip'
+# )
+# download.file(shp_url, tmp)
 
-chicago = paste0('/vsizip/', tmp) |>
-  st_read(quiet = TRUE) |>
-  st_transform(crs = 4326L)
+# chicago = paste0('/vsizip/', tmp) |>
+#   st_read(quiet = TRUE) |>
+#   st_transform(crs = 4326L)
 
-artSF = gh_to_sf(
-  art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
-  gh_col = 'geohash'
-)
-plot(st_geometry(chicago), lwd = 0.5, main = 'Public Art Locations in Chicago')
-plot(artSF['N'], add = TRUE)
+# artSF = gh_to_sf(
+#   art[, .N, by = .(geohash = gh_encode(LATITUDE, LONGITUDE, 6L))],
+#   gh_col = 'geohash'
+# )
+# plot(st_geometry(chicago), lwd = 0.5, main = 'Public Art Locations in Chicago')
+# plot(artSF['N'], add = TRUE)
 ```
-
-<div class="figure">
-<img src="README-chicago_plot-1.png" alt="A viridis-color-scaled plot of Chicago overlaid with two types  of polygons: (1) the erose, semi-regular map of neighborhoods; and (2)  the regular, rectangular map of geohashes with public art. The salient  features of the plot are further described in the README body below." width="\textwidth" />
-<p class="caption">plot of chunk chicago_plot</p>
-</div>
 
 Chicago connoisseurs will recognize the biggest concentration around Lincoln Park, with another concentration along the waterfront near Millenium/Grant Parks.
 

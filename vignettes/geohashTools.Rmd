@@ -51,7 +51,7 @@ gh_encode(11.3113917, -74.0779006, precision = 5L)
 
 ### Example: Encoding many points
 
-We can use this as a simple, regular level of spatial aggregation for spatial points data, e.g., counting presence of public art throughout the city of Chicago, as captured in [this dataset](https://data.cityofchicago.org/Parks-Recreation/Parks-Public-Art/sj6t-9cju) provided by the City:
+We can use this as a simple, regular level of spatial aggregation for spatial points data. Here with randomly-selected coordinates:
 
 ```{r}
 coords = data.frame(
