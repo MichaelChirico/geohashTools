@@ -16,7 +16,7 @@ gh_encode(latitude, longitude, precision = 6L)
   \item{precision}{ Positive \code{integer} scalar controlling the 'zoom level' -- how many characters should be used in the output. }
 }
 \details{
-  \code{precision} is limited to at most 28. This level of precision encodes locations on the globe at a nanometer scale and is already more than enough for basically all applications.
+  \code{precision} is limited to at most 25. This level of precision encodes locations on the globe at a nanometer scale and is already more than enough for basically all applications.
 
   Longitudes outside \code{[-180, 180)} will be wrapped appropriately to the standard longitude grid.
 }

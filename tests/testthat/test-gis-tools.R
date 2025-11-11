@@ -20,7 +20,7 @@ test_that('gh_to_sp works', {
       byrow = TRUE, ncol = 2L
     )
   )
-  wgs = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
+  wgs = sp::CRS('EPSG:4326')
   expect_identical(ghSP@proj4string, wgs)
 
   # duplicate inputs dropped
@@ -53,7 +53,7 @@ test_that('gh_to_spdf.default works', {
       byrow = TRUE, ncol = 2L
     )
   )
-  wgs = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
+  wgs = sp::CRS('EPSG:4326')
   expect_identical(ghSPDF@proj4string, wgs)
 
   DF = data.frame(ID = 1:9, row.names = urumqi)
@@ -91,7 +91,7 @@ test_that('gh_to_spdf.data.frame works', {
       byrow = TRUE, ncol = 2L
     )
   )
-  wgs = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
+  wgs = sp::CRS('EPSG:4326')
   expect_identical(ghSPDF@proj4string, wgs)
   expect_identical(ghSPDF@data, DF)
 
@@ -150,7 +150,7 @@ test_that('gh_covering works', {
 
   # core
   banjarmasin_cover = gh_covering(banjarmasin)
-  wgs = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
+  wgs = sp::CRS('EPSG:4326')
   sp::proj4string(banjarmasin) = wgs
   # use gUnaryUnion to overcome rgeos bug as reported 2019-08-16
   expect_false(anyNA(sp::over(banjarmasin, banjarmasin_cover)))
@@ -172,7 +172,9 @@ test_that('gh_covering works', {
   sp::proj4string(banjarmasin) = NA_character_
   banjarmasin_cover = gh_covering(banjarmasin, minimal = TRUE)
   sp::proj4string(banjarmasin_cover) = wgs
-  expect_equivalent(banjarmasin_cover, banjarmasin_tight)
+  # Compare just the data and polygons, not CRS representation which can vary
+  expect_identical(banjarmasin_cover@data, banjarmasin_tight@data)
+  expect_identical(banjarmasin_cover@polygons, banjarmasin_tight@polygons)
 
   # works for SpatialPointsDataFrame when minimal=TRUE, #30
   banjarmasinDF = sp::SpatialPointsDataFrame(
