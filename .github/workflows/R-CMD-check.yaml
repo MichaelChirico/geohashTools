@@ -1,0 +1,89 @@
+# GitHub Actions workflow for R CMD check
+# Replaces deprecated Travis CI configuration
+
+name: R-CMD-check
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: macos-latest,    r: 'release'}
+          - {os: windows-latest,  r: 'release'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      PKG_CFLAGS: "-O3 -Wall -pedantic"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libudunits2-dev \
+            libproj-dev \
+            libgeos-dev \
+            libgdal-dev
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::rcmdcheck
+            any::covr
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          error-on: 'warning'
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check
+
+      - name: Test coverage
+        if: success() && runner.os == 'Linux' && matrix.config.r == 'release'
+        run: |
+          Rscript -e 'covr::codecov(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
+          )'
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -1,5 +1,11 @@
 # `geohashTools` NEWS
 
+## v0.3.4 (Development)
+
+### INFRASTRUCTURE
+
+ 1. Migrated from deprecated Travis CI to GitHub Actions for continuous integration. New workflow tests across multiple R versions (release, devel, oldrel-1) and operating systems (Ubuntu, macOS, Windows), providing more comprehensive coverage. Badge updated in README.
+
 ## v0.3.3
 
 Drop references to deprecated rgdal.
