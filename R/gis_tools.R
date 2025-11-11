@@ -73,14 +73,33 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
     SP$id = rownames(SP@data)
   bb = sp::bbox(SP)
   delta = 2.0 * gh_delta(precision)
-  # TODO: actually goes through an encode-decode cycle -- more efficient to
-  #   just build the cells directly by rounding to the precision's grid
+
+  # Build grid and encode to geohashes
   gh = with(expand.grid(
     latitude = seq(bb[2L, 'min'], bb[2L, 'max'] + delta[1L], by = delta[1L]),
     longitude = seq(bb[1L, 'min'], bb[1L, 'max'] + delta[2L], by = delta[2L])
   ), gh_encode(latitude, longitude, precision))
+
+  # Optimization: decode once and build polygons directly
+  # instead of going through gh_to_sf -> gh_to_spdf -> gh_to_sp -> gh_decode
+  gh_xy = gh_decode(gh, include_delta = TRUE)
+
+  # Build SpatialPolygons directly from decoded coordinates
+  cover_sp = sp::SpatialPolygons(lapply(seq_along(gh), function(ii) {
+    sp::Polygons(list(sp::Polygon(cbind(
+      # the four corners of the current geohash
+      gh_xy$longitude[ii] + c(-1.0, -1.0, 1.0, 1.0, -1.0) * gh_xy$delta_longitude[ii],
+      gh_xy$latitude[ii] + c(-1.0, 1.0, 1.0, -1.0, -1.0) * gh_xy$delta_latitude[ii]
+    ))), ID = gh[ii])
+  }), proj4string = wgs())
+
+  # Convert to SPDF
+  cover = sp::SpatialPolygonsDataFrame(
+    cover_sp,
+    data = data.frame(row.names = gh, ID = seq_along(gh))
+  )
+
   if (is.na(prj4 <- sp::proj4string(SP))) sp::proj4string(SP) = (prj4 <- wgs())
-  cover = methods::as(gh_to_sf(gh), 'Spatial')
   sp::proj4string(cover) = prj4
   if (minimal) {
     # slightly more efficient to use rgeos, but there's a bug preventing
