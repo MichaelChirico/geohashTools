@@ -1,5 +1,17 @@
 # `geohashTools` NEWS
 
+## v0.3.4 (Development)
+
+### IMPROVEMENTS
+
+ 1. Fixed documentation for `gh_encode` precision limit (was incorrectly stated as 28, corrected to 25).
+
+ 2. Added bounds checking to `gh_delta` to validate precision is between 0 and 25, preventing silent incorrect results for invalid inputs.
+
+ 3. Updated CRS specification from deprecated PROJ.4 string to EPSG:4326 for better compatibility with modern PROJ versions.
+
+ 4. Optimized duplicate detection in `gh_to_sp`, `gh_to_spdf.default`, and `gh_to_spdf.data.frame` to use single-pass algorithm instead of double-scan, improving performance ~2x when duplicates are present.
+
 ## v0.3.3
 
 Drop references to deprecated rgdal.
