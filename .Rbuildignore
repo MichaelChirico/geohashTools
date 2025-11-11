@@ -12,6 +12,8 @@
 # CI & codecov-related
 ^\.travis\.yml$
 ^\.lintr$
+^\.github$
+^benchmarks$
 
 ^logo_maker.R$
 ^_pkgdown\.yml$
