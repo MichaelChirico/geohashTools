@@ -172,7 +172,7 @@ test_that('gh_covering works', {
   sp::proj4string(banjarmasin) = NA_character_
   banjarmasin_cover = gh_covering(banjarmasin, minimal = TRUE)
   sp::proj4string(banjarmasin_cover) = wgs
-  expect_equivalent(banjarmasin_cover, banjarmasin_tight)
+  expect_equal(banjarmasin_cover, banjarmasin_tight, ignore_attr = TRUE)
 
   # works for SpatialPointsDataFrame when minimal=TRUE, #30
   banjarmasinDF = sp::SpatialPointsDataFrame(
