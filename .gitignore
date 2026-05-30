@@ -15,6 +15,9 @@
 # .Rmd cache
 *_cache
 
+# benchmark result artifacts
+benchmarks/*.rds
+
 # silly Apple
 .DS_Store
 inst/doc
