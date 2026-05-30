@@ -68,6 +68,22 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
   }
   if (!inherits(SP, 'Spatial'))
     stop('Object to cover must be Spatial (or subclass)')
+
+  # Fast path for point input: the minimal covering of a set of points is
+  #   exactly the set of distinct geohashes containing those points. We can
+  #   encode the points directly instead of building & filtering a full
+  #   bounding-box grid via sp::over -- the grid explodes with precision
+  #   (e.g. >50k cells at precision 7, >1.6M at precision 8 for a small bbox),
+  #   so this is orders of magnitude faster and uses far less memory.
+  if (minimal && inherits(SP, 'SpatialPoints')) {
+    xy = sp::coordinates(SP)
+    gh = unique(gh_encode(xy[, 2L], xy[, 1L], precision))
+    cover = gh_to_spdf(gh)
+    if (is.na(prj4 <- sp::proj4string(SP))) prj4 = wgs()
+    sp::proj4string(cover) = prj4
+    return(if (sf_input) sf::st_as_sf(cover) else cover)
+  }
+
   # sp::over behaves poorly with 0-column input
   if (inherits(SP, 'SpatialPointsDataFrame') && !NCOL(SP))
     SP$id = rownames(SP@data)

@@ -184,6 +184,34 @@ test_that('gh_covering works', {
   expect_error(gh_covering(4L), 'Object to cover must be Spatial', fixed = TRUE)
 })
 
+test_that('gh_covering minimal point fast path is correct', {
+  skip_if_not_installed('sp')
+  set.seed(2920L)
+  pts = sp::SpatialPoints(cbind(runif(50L, 114.5, 115.0), runif(50L, -3.4, -3.2)))
+  sp::proj4string(pts) = sp::CRS('+proj=longlat +datum=WGS84', doCheckCRSArgs = FALSE)
+  xy = sp::coordinates(pts)
+
+  for (precision in 5:8) {
+    cover = gh_covering(pts, precision = precision, minimal = TRUE)
+    # minimal covering of points == the distinct geohashes containing them
+    expect_setequal(
+      rownames(cover@data),
+      unique(gh_encode(xy[, 2L], xy[, 1L], precision))
+    )
+    # every input point is contained in the covering
+    expect_false(anyNA(sp::over(pts, sp::geometry(cover))))
+    # no superfluous cells: every cell contains at least one point
+    expect_true(all(table(gh_encode(xy[, 2L], xy[, 1L], precision)) > 0L))
+  }
+
+  # SpatialPointsDataFrame yields the same covering geometry as SpatialPoints
+  ptsDF = sp::SpatialPointsDataFrame(pts, data.frame(v = seq_along(pts)))
+  expect_identical(
+    gh_covering(ptsDF, minimal = TRUE)@polygons,
+    gh_covering(pts, minimal = TRUE)@polygons
+  )
+})
+
 test_that('gh_covering_sf works', {
   skip_if_not_installed('sp')
   skip_if_not_installed('sf')

@@ -6,6 +6,8 @@
 
  1. Optimized `gh_covering` by eliminating redundant encode-decode cycle. The function now decodes geohashes once and builds spatial polygons directly, rather than going through `gh_to_sf` → `gh_to_spdf` → `gh_to_sp` → `gh_decode`. Benchmarks show 2-3× speedup across typical use cases, with larger improvements for higher precision values.
 
+ 2. `gh_covering(SP, minimal = TRUE)` is dramatically faster for point input (`SpatialPoints`/`SpatialPointsDataFrame`). The minimal covering of a set of points is exactly the set of distinct geohashes containing them, so the points are now encoded directly instead of building and filtering a full bounding-box grid via `sp::over`. The old approach scaled with the bounding-box area (e.g. >50,000 candidate cells at precision 7, >1,600,000 at precision 8 for a small bounding box); the new approach scales with the number of points. Output is identical. In benchmarks this is ~600× faster at precision 7 (≈3,100 ms → ≈5 ms) and makes precision ≥8 coverings practical.
+
 ## v0.3.3
 
 Drop references to deprecated rgdal.
