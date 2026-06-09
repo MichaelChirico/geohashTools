@@ -7,8 +7,6 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg) {
     error("Inputs must be the same size.");
   // precision is either a single value (recycled) or one value per coordinate
   int nk = LENGTH(k_arg);
-  if (nk != 1 && nk != n)
-    error("precision must be length 1 or the same length as the coordinates.");
   const int *kp = INTEGER(k_arg);
   // size the working buffer to the largest requested precision
   int kmax = 0;
