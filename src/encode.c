@@ -5,9 +5,13 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg) {
   int n = LENGTH(y);
   if (LENGTH(x) != n)
     error("Inputs must be the same size.");
-  int k = INTEGER(k_arg)[0];
-  char gh_elt[k+1];
-  gh_elt[k]='\0';
+  // precision is either a single value (recycled) or one value per coordinate
+  const int nk = LENGTH(k_arg);
+  const int *kp = INTEGER_RO(k_arg);
+  // size the working buffer to the largest requested precision
+  int kmax = 0;
+  for (int j=0; j<nk; j++) if (kp[j] > kmax) kmax = kp[j];
+  char *gh_elt = (char *) R_alloc(kmax + 1, sizeof(char));
 
   int nprotect = 0;
   SEXP gh = PROTECT(allocVector(STRSXP, n)); nprotect++;
@@ -37,6 +41,8 @@ SEXP gh_encode(SEXP y, SEXP x, SEXP k_arg) {
   } zx, zy;
   int xidx, yidx; // which cell did we land in?
   for (int i=0; i<n; i++) {
+    int k = kp[nk == 1 ? 0 : i]; // this coordinate's precision
+    gh_elt[k] = '\0';
     if (!R_FINITE(xp[i]) || !R_FINITE(yp[i])) {
       SET_STRING_ELT(gh, i, NA_STRING);
       continue;

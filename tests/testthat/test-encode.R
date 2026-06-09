@@ -69,7 +69,7 @@ test_that('geohash encoder works', {
   )
   expect_error(
     gh_encode(y, x, c(5L, 6L)),
-    'More than one precision value',
+    'precision must be length 1 or the same length as the coordinates',
     fixed = TRUE
   )
   expect_error(
@@ -100,4 +100,59 @@ test_that('geohash encoder works', {
 
   # stress testing
   expect_identical(gh_encode(numeric(), numeric()), character())
+})
+
+test_that('gh_encode accepts a vector of precisions', {
+  withr::local_seed(4080L)
+  lat = runif(8L, -80.0, 80.0)
+  lon = runif(8L, -170.0, 170.0)
+  precision = 1:8
+
+  vec = gh_encode(lat, lon, precision)
+
+  # equivalent to encoding each coordinate at its own precision
+  elementwise = vapply(
+    seq_along(lat),
+    function(i) gh_encode(lat[i], lon[i], precision[i]),
+    character(1L)
+  )
+  expect_identical(vec, elementwise)
+
+  # each result is the length-`precision` prefix of the full-precision encode
+  full = gh_encode(lat, lon, max(precision))
+  expect_identical(vec, substr(full, 1L, precision))
+
+  # NA / infinite coordinates remain NA even with per-element precision
+  expect_identical(
+    gh_encode(c(0.1234, NA, Inf), c(5.6789, 1.0, 2.0), c(6L, 5L, 4L)),
+    c('s0h09n', NA_character_, NA_character_)
+  )
+
+  # per-element truncation past the maximum precision
+  expect_warning(
+    expect_identical(
+      gh_encode(c(0.1234, 0.1234), c(5.6789, 5.6789), c(6L, 30L)),
+      c('s0h09n', substring('s0h09nrnzgqv8je0f4jpd0000', 1L, 25L))
+    ),
+    'Precision is limited',
+    fixed = TRUE
+  )
+
+  # invalid per-element precision
+  expect_error(
+    gh_encode(lat, lon, c(1:7, 0L)),
+    'Precision is measured',
+    fixed = TRUE
+  )
+  expect_error(
+    gh_encode(lat, lon, c(1:7, NA_integer_)),
+    'Precision is measured',
+    fixed = TRUE
+  )
+  # wrong-length precision (neither 1 nor length(coords))
+  expect_error(
+    gh_encode(lat, lon, 1:3),
+    'precision must be length 1 or the same length as the coordinates',
+    fixed = TRUE
+  )
 })

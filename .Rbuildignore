@@ -13,6 +13,9 @@
 ^\.travis\.yml$
 ^\.lintr$
 
+# editor / tooling
+^\.claude$
+
 ^logo_maker.R$
 ^_pkgdown\.yml$
 ^docs$

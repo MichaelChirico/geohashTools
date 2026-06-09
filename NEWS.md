@@ -1,5 +1,11 @@
 # `geohashTools` NEWS
 
+## v0.3.4 (Development)
+
+### NEW FEATURES
+
+ 1. `gh_encode` accepts a vector of `precision` values (the same length as the input coordinates), so different coordinates can be encoded at different zoom levels in a single call. A single `precision` value still applies to all coordinates as before.
+
 ## v0.3.3
 
 Drop references to deprecated rgdal.
