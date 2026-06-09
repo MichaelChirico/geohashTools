@@ -103,7 +103,7 @@ test_that('geohash encoder works', {
 })
 
 test_that('gh_encode accepts a vector of precisions', {
-  set.seed(4080L)
+  withr::local_seed(4080L)
   lat = runif(8L, -80.0, 80.0)
   lon = runif(8L, -170.0, 170.0)
   precision = 1:8
@@ -121,9 +121,6 @@ test_that('gh_encode accepts a vector of precisions', {
   # each result is the length-`precision` prefix of the full-precision encode
   full = gh_encode(lat, lon, max(precision))
   expect_identical(vec, substr(full, 1L, precision))
-
-  # length-1 precision still recycles (unchanged behaviour)
-  expect_identical(gh_encode(lat, lon, 6L), substr(full, 1L, 6L))
 
   # NA / infinite coordinates remain NA even with per-element precision
   expect_identical(

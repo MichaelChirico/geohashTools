@@ -6,12 +6,6 @@
 
  1. `gh_encode` accepts a vector of `precision` values (the same length as the input coordinates), so different coordinates can be encoded at different zoom levels in a single call. A single `precision` value still applies to all coordinates as before.
 
-### NOTES
-
- 1. Documentation for `gh_encode` corrected to state the actual maximum precision (25, not 28).
-
- 2. Added `.claude` to `.Rbuildignore` to silence a "hidden files and directories" `NOTE` from `R CMD check`.
-
 ## v0.3.3
 
 Drop references to deprecated rgdal.
