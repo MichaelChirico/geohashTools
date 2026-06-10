@@ -11,13 +11,15 @@ gh_delta(precision)
 \item{precision}{\code{integer} precision level desired.}
 }
 \value{
-Length-2 \code{numeric} vector; the first element is the \emph{latitude} (y-coordinate) half-width at the input \code{precision}, the second element is the \emph{longitude} (x-coordinate).
+Length-2 \code{numeric} vector; the first element is the \emph{latitude} (y-coordinate) half-width at the input
+\code{precision}, the second element is the \emph{longitude} (x-coordinate).
 }
 \description{
 Various common functions that arise when working often with geohashes
 }
 \note{
-\emph{Caveat coder}: not much is done in the way of consistency checking since this is a convenience function. So e.g. real-valued "precision"s will give results.
+\emph{Caveat coder}: not much is done in the way of consistency checking since this is a convenience function.
+So e.g. real-valued "precision"s will give results.
 }
 \examples{
 gh_delta(6)

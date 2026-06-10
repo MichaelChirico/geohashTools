@@ -11,7 +11,9 @@ gh_encode(latitude, longitude, precision = 6L)
 
 \item{longitude}{\code{numeric} vector of input longitude (x) coordinates. Should be in \verb{[-180, 180)}.}
 
-\item{precision}{Positive \code{integer} controlling the 'zoom level' -- how many characters should be used in the output. Either a single value applied to all coordinates, or a vector the same length as \code{latitude}/\code{longitude} giving a per-coordinate precision.}
+\item{precision}{Positive \code{integer} controlling the 'zoom level' -- how many characters should be used in the
+output. Either a single value applied to all coordinates, or a vector the same length as \code{latitude}/\code{longitude}
+giving a per-coordinate precision.}
 }
 \value{
 \code{character} vector of geohashes corresponding to the input. \code{NA} in gives \code{NA} out.
@@ -20,7 +22,8 @@ gh_encode(latitude, longitude, precision = 6L)
 Convert latitude/longitude coordinates into geohash-encoded strings
 }
 \details{
-\code{precision} is limited to at most 25. This level of precision encodes locations on the globe at a nanometer scale and is already more than enough for basically all applications.
+\code{precision} is limited to at most 25. This level of precision encodes locations on the globe at a nanometer scale
+and is already more than enough for basically all applications.
 
 Longitudes outside \verb{[-180, 180)} will be wrapped appropriately to the standard longitude grid.
 }

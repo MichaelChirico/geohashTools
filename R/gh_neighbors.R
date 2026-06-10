@@ -9,9 +9,11 @@
 #' North/south-pole adjacent geohashes are missing three of their neighbors; these will be returned as `NA_character_`.
 #'
 #' @return
-#' `list` with `character` vector entries in the direction relative to the input geohashes indicated by their name (e.g. `value$south` gives all of the *southern* neighbors of the input `geohashes`).
+#' `list` with `character` vector entries in the direction relative to the input geohashes indicated by their name
+#' (e.g. `value$south` gives all of the *southern* neighbors of the input `geohashes`).
 #'
-#' The order is `self` (if `self = TRUE`), `southwest`, `south`, `southeast`, `west`, `east`, `northwest`, `north`, `northeast` (reflecting an easterly, then northerly traversal of the neighborhod).
+#' The order is `self` (if `self = TRUE`), `southwest`, `south`, `southeast`, `west`, `east`, `northwest`, `north`,
+#' `northeast` (reflecting an easterly, then northerly traversal of the neighborhod).
 #'
 #' @references
 #' <http://geohash.org/> ( Gustavo Niemeyer's original geohash service )

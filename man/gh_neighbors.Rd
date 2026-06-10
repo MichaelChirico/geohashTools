@@ -15,9 +15,11 @@ gh_neighbours(geohashes, self = TRUE)
 \item{self}{Should the input also be returned as a list element? Convenient for one-line usage / piping}
 }
 \value{
-\code{list} with \code{character} vector entries in the direction relative to the input geohashes indicated by their name (e.g. \code{value$south} gives all of the \emph{southern} neighbors of the input \code{geohashes}).
+\code{list} with \code{character} vector entries in the direction relative to the input geohashes indicated by their name
+(e.g. \code{value$south} gives all of the \emph{southern} neighbors of the input \code{geohashes}).
 
-The order is \code{self} (if \code{self = TRUE}), \code{southwest}, \code{south}, \code{southeast}, \code{west}, \code{east}, \code{northwest}, \code{north}, \code{northeast} (reflecting an easterly, then northerly traversal of the neighborhod).
+The order is \code{self} (if \code{self = TRUE}), \code{southwest}, \code{south}, \code{southeast}, \code{west}, \code{east}, \code{northwest}, \code{north},
+\code{northeast} (reflecting an easterly, then northerly traversal of the neighborhod).
 }
 \description{
 Return the geohashes adjacent to input geohashes

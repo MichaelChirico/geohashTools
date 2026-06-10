@@ -5,10 +5,12 @@
 #' @param precision `integer` precision level desired.
 #'
 #' @note
-#' *Caveat coder*: not much is done in the way of consistency checking since this is a convenience function. So e.g. real-valued "precision"s will give results.
+#' *Caveat coder*: not much is done in the way of consistency checking since this is a convenience function.
+#' So e.g. real-valued "precision"s will give results.
 #'
 #' @return
-#' Length-2 `numeric` vector; the first element is the *latitude* (y-coordinate) half-width at the input `precision`, the second element is the *longitude* (x-coordinate).
+#' Length-2 `numeric` vector; the first element is the *latitude* (y-coordinate) half-width at the input
+#' `precision`, the second element is the *longitude* (x-coordinate).
 #'
 #' @references
 #' <http://geohash.org/> ( Gustavo Niemeyer's original geohash service )

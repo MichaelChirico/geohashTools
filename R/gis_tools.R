@@ -11,22 +11,30 @@ check_suggested = function(pkg) {
 
 #' Helpers for interfacing geohashes with sp/sf objects
 #'
-#' These functions smooth the gateway between working with geohashes and geospatial information built for the major geospatial packages in R, [sp::sp] and [sf::sf].
+#' These functions smooth the gateway between working with geohashes and geospatial information built for the
+#' major geospatial packages in R, [sp::sp] and [sf::sf].
 #'
 #' @param geohashes `character` vector of geohashes to be converted to polygons.
 #' @param \dots Arguments for subsequent methods.
-#' @param SP A [sp::Spatial] object (requires `bbox` and `proj4string` methods, and `over` if `minimal` is `TRUE`)
+#' @param SP A [sp::Spatial] object (requires `bbox` and `proj4string` methods, and `over` if `minimal` is
+#'   `TRUE`)
 #' @param precision `integer` specifying the precision of geohashes to use, same as [gh_encode()]
-#' @param minimal `logical`; if `FALSE`, the output will have all geohashes in the bounding box of `SP`; if `TRUE`, any geohashes not intersecting `SP` will be removed.
-#' @param gh_df `data.frame` which 1) contains a column of geohashes to be converted to polygons and 2) will serve as the `data` slot of the resultant [sp::SpatialPolygonsDataFrame] object.
+#' @param minimal `logical`; if `FALSE`, the output will have all geohashes in the bounding box of `SP`; if
+#'   `TRUE`, any geohashes not intersecting `SP` will be removed.
+#' @param gh_df `data.frame` which 1) contains a column of geohashes to be converted to polygons and 2) will
+#'   serve as the `data` slot of the resultant [sp::SpatialPolygonsDataFrame] object.
 #' @param gh_col `character` column name saying where the geohashes are stored in `gh_df`.
 #'
 #' @details
-#' `gh_to_sp` relies on the [gh_decode()] function. Note in particular that this function accepts any length of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, though duplicates will be caught and excluded.
+#' `gh_to_sp` relies on the [gh_decode()] function. Note in particular that this function accepts any length
+#' of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, though duplicates will be caught
+#' and excluded.
 #'
-#' `gh_to_spdf.data.frame` will use `match.ID = FALSE` in the call to `SpatialPolygonsDataFrame`. Please file an issue if you'd like this to be more flexible.
+#' `gh_to_spdf.data.frame` will use `match.ID = FALSE` in the call to `SpatialPolygonsDataFrame`. Please file
+#' an issue if you'd like this to be more flexible.
 #'
-#' `gh_to_sf` is just a wrapper of [sf::st_as_sf()] around `gh_to_spdf`; as such it requires both `sp` and `sf` packages to work.
+#' `gh_to_sf` is just a wrapper of [sf::st_as_sf()] around `gh_to_spdf`; as such it requires both `sp` and `sf`
+#' packages to work.
 #'
 #' @return
 #' For `gh_to_sp`, a [sp::SpatialPolygons] object.

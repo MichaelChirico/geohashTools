@@ -4,10 +4,13 @@
 #'
 #' @param latitude `numeric` vector of input latitude (y) coordinates. Must be in `[-90, 90)`.
 #' @param longitude `numeric` vector of input longitude (x) coordinates. Should be in `[-180, 180)`.
-#' @param precision Positive `integer` controlling the 'zoom level' -- how many characters should be used in the output. Either a single value applied to all coordinates, or a vector the same length as `latitude`/`longitude` giving a per-coordinate precision.
+#' @param precision Positive `integer` controlling the 'zoom level' -- how many characters should be used in the
+#'   output. Either a single value applied to all coordinates, or a vector the same length as `latitude`/`longitude`
+#'   giving a per-coordinate precision.
 #'
 #' @details
-#' `precision` is limited to at most 25. This level of precision encodes locations on the globe at a nanometer scale and is already more than enough for basically all applications.
+#' `precision` is limited to at most 25. This level of precision encodes locations on the globe at a nanometer scale
+#' and is already more than enough for basically all applications.
 #'
 #' Longitudes outside `[-180, 180)` will be wrapped appropriately to the standard longitude grid.
 #'

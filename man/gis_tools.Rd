@@ -27,15 +27,18 @@ gh_to_sf(...)
 
 \item{\dots}{Arguments for subsequent methods.}
 
-\item{gh_df}{\code{data.frame} which 1) contains a column of geohashes to be converted to polygons and 2) will serve as the \code{data} slot of the resultant \link[sp:SpatialPolygonsDataFrame]{sp::SpatialPolygonsDataFrame} object.}
+\item{gh_df}{\code{data.frame} which 1) contains a column of geohashes to be converted to polygons and 2) will
+serve as the \code{data} slot of the resultant \link[sp:SpatialPolygonsDataFrame]{sp::SpatialPolygonsDataFrame} object.}
 
 \item{gh_col}{\code{character} column name saying where the geohashes are stored in \code{gh_df}.}
 
-\item{SP}{A \link[sp:Spatial]{sp::Spatial} object (requires \code{bbox} and \code{proj4string} methods, and \code{over} if \code{minimal} is \code{TRUE})}
+\item{SP}{A \link[sp:Spatial]{sp::Spatial} object (requires \code{bbox} and \code{proj4string} methods, and \code{over} if \code{minimal} is
+\code{TRUE})}
 
 \item{precision}{\code{integer} specifying the precision of geohashes to use, same as \code{\link[=gh_encode]{gh_encode()}}}
 
-\item{minimal}{\code{logical}; if \code{FALSE}, the output will have all geohashes in the bounding box of \code{SP}; if \code{TRUE}, any geohashes not intersecting \code{SP} will be removed.}
+\item{minimal}{\code{logical}; if \code{FALSE}, the output will have all geohashes in the bounding box of \code{SP}; if
+\code{TRUE}, any geohashes not intersecting \code{SP} will be removed.}
 }
 \value{
 For \code{gh_to_sp}, a \link[sp:SpatialPolygons]{sp::SpatialPolygons} object.
@@ -45,14 +48,19 @@ For \code{gh_to_spdf}, a \link[sp:SpatialPolygonsDataFrame]{sp::SpatialPolygonsD
 For \code{gh_to_sf}, a \link[sf:sf]{sf::sf} object.
 }
 \description{
-These functions smooth the gateway between working with geohashes and geospatial information built for the major geospatial packages in R, \link[sp:sp]{sp::sp} and \link[sf:sf]{sf::sf}.
+These functions smooth the gateway between working with geohashes and geospatial information built for the
+major geospatial packages in R, \link[sp:sp]{sp::sp} and \link[sf:sf]{sf::sf}.
 }
 \details{
-\code{gh_to_sp} relies on the \code{\link[=gh_decode]{gh_decode()}} function. Note in particular that this function accepts any length of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, though duplicates will be caught and excluded.
+\code{gh_to_sp} relies on the \code{\link[=gh_decode]{gh_decode()}} function. Note in particular that this function accepts any length
+of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, though duplicates will be caught
+and excluded.
 
-\code{gh_to_spdf.data.frame} will use \code{match.ID = FALSE} in the call to \code{SpatialPolygonsDataFrame}. Please file an issue if you'd like this to be more flexible.
+\code{gh_to_spdf.data.frame} will use \code{match.ID = FALSE} in the call to \code{SpatialPolygonsDataFrame}. Please file
+an issue if you'd like this to be more flexible.
 
-\code{gh_to_sf} is just a wrapper of \code{\link[sf:st_as_sf]{sf::st_as_sf()}} around \code{gh_to_spdf}; as such it requires both \code{sp} and \code{sf} packages to work.
+\code{gh_to_sf} is just a wrapper of \code{\link[sf:st_as_sf]{sf::st_as_sf()}} around \code{gh_to_spdf}; as such it requires both \code{sp} and \code{sf}
+packages to work.
 }
 \examples{
 # get the neighborhood of this geohash in downtown Apia as an sp object
