@@ -90,7 +90,7 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
     cover = cover[which(n_in_cover > 0L), ]
     sp::proj4string(cover) = prj4
   }
-  return(if (sf_input) sf::st_as_sf(cover) else cover)
+  if (sf_input) sf::st_as_sf(cover) else cover
 }
 
 

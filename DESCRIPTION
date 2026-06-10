@@ -12,12 +12,13 @@ License: MPL-2.0 | file LICENSE
 Imports:
     methods
 Suggests: 
+    ggplot2,
+    knitr,
+    rmarkdown,
     sf,
     sp,
     testthat (>= 3.0.0),
-    knitr,
-    rmarkdown,
-    ggplot2
+    withr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Encoding: UTF-8
