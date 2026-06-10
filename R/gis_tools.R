@@ -9,6 +9,44 @@ check_suggested = function(pkg) {
 }
 # nocov end
 
+#' Helpers for interfacing geohashes with sp/sf objects
+#'
+#' These functions smooth the gateway between working with geohashes and geospatial information built for the major geospatial packages in R, [sp::sp] and [sf::sf].
+#'
+#' @param geohashes `character` vector of geohashes to be converted to polygons.
+#' @param \dots Arguments for subsequent methods.
+#' @param SP A [sp::Spatial] object (requires `bbox` and `proj4string` methods, and `over` if `minimal` is `TRUE`)
+#' @param precision `integer` specifying the precision of geohashes to use, same as [gh_encode()]
+#' @param minimal `logical`; if `FALSE`, the output will have all geohashes in the bounding box of `SP`; if `TRUE`, any geohashes not intersecting `SP` will be removed.
+#' @param gh_df `data.frame` which 1) contains a column of geohashes to be converted to polygons and 2) will serve as the `data` slot of the resultant [sp::SpatialPolygonsDataFrame] object.
+#' @param gh_col `character` column name saying where the geohashes are stored in `gh_df`.
+#'
+#' @details
+#' `gh_to_sp` relies on the [gh_decode()] function. Note in particular that this function accepts any length of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, though duplicates will be caught and excluded.
+#'
+#' `gh_to_spdf.data.frame` will use `match.ID = FALSE` in the call to `SpatialPolygonsDataFrame`. Please file an issue if you'd like this to be more flexible.
+#'
+#' `gh_to_sf` is just a wrapper of [sf::st_as_sf()] around `gh_to_spdf`; as such it requires both `sp` and `sf` packages to work.
+#'
+#' @return
+#' For `gh_to_sp`, a [sp::SpatialPolygons] object.
+#'
+#' For `gh_to_spdf`, a [sp::SpatialPolygonsDataFrame] object.
+#'
+#' For `gh_to_sf`, a [sf::sf] object.
+#'
+#' @examples
+#' # get the neighborhood of this geohash in downtown Apia as an sp object
+#' downtown = '2jtc5x'
+#' apia_nbhd = unlist(gh_neighbors(downtown))
+#' apia_sp = gh_to_sp(apia_nbhd)
+#'
+#' # all geohashes covering a random sampling within Apia:
+#' apia_covering = gh_covering(smp <- sp::spsample(apia_sp, 10L, 'random'))
+#'
+#' apia_sf = gh_to_sf(apia_nbhd)
+#'
+#' @name gis_tools
 #' @export
 gh_to_sp = function(geohashes) {
   check_suggested('sp')
@@ -29,12 +67,14 @@ gh_to_sp = function(geohashes) {
   }), proj4string = wgs())
 }
 
+#' @rdname gis_tools
 #' @export
 gh_to_spdf = function(...) {
   check_suggested('sp')
   UseMethod('gh_to_spdf')
 }
 
+#' @rdname gis_tools
 #' @export
 gh_to_spdf.default = function(geohashes, ...) {
   if (anyDuplicated(geohashes) > 0L) {
@@ -48,6 +88,7 @@ gh_to_spdf.default = function(geohashes, ...) {
   )
 }
 
+#' @rdname gis_tools
 #' @export
 gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   if (is.na(idx <- match(gh_col, names(gh_df))))
@@ -64,6 +105,7 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
+#' @rdname gis_tools
 #' @export
 gh_covering = function(SP, precision = 6L, minimal = FALSE) {
   check_suggested('sp')
@@ -99,6 +141,7 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
 }
 
 
+#' @rdname gis_tools
 #' @export
 gh_to_sf = function(...) {
   check_suggested('sf')
