@@ -1,0 +1,65 @@
+---
+title: "Justification for data.table import"
+output: html_document
+date: "2023-06-30"
+---
+
+```{r Define both functions}
+library(data.table)
+library(microbenchmark)
+
+gh_fill_dt <- function(geohashes, precision) {
+  if (uniqueN(nchar(geohashes)) > 1) {
+    stop("Input Geohashes must all have the same precision level.")
+  }
+  if (sum(grepl("['ailo]", geohashes)) > 0) {
+    stop("Invalid Geohash; Valid characters: [0123456789bcdefghjkmnpqrstuvwxyz]")
+  }
+
+  new_levels <- precision - nchar(geohashes[1])
+
+  base32 <-
+    unlist(strsplit("0123456789bcdefghjkmnpqrstuvwxyz", split = ""))
+
+  grid <-
+    do.call(data.table::CJ, append(list(geohashes), replicate(new_levels, base32, FALSE)))
+
+  do.call(paste0, grid)
+
+}
+
+
+gh_fill_base <- function(geohashes, precision) {
+  if (uniqueN(nchar(geohashes)) > 1) {
+    stop("Input Geohashes must all have the same precision level.")
+  }
+  if (sum(grepl("['ailo]", geohashes)) > 0) {
+    stop("Invalid Geohash; Valid characters: [0123456789bcdefghjkmnpqrstuvwxyz]")
+  }
+
+  new_levels <- precision - nchar(geohashes[1])
+
+  base32 <-
+    unlist(strsplit("0123456789bcdefghjkmnpqrstuvwxyz", split = ""))
+
+  grid <-
+    do.call(expand.grid, append(list(geohashes), replicate(new_levels, base32, FALSE)))
+
+  do.call(paste0, grid)
+
+}
+```
+
+
+
+```{r create test vector}
+test_vector <- gh_fill_dt(c("9w", "9x"), 4L) # Length of 2048
+```
+
+```{r benchmark test}
+microbenchmark(gh_fill_dt(test_vector, 6L))
+microbenchmark(gh_fill_base(test_vector, 6L))
+
+
+```
+
