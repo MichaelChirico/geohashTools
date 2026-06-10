@@ -2,6 +2,10 @@
 
 ## v0.3.4 (Development)
 
+### DEPRECATED & DEFUNCT
+
+ 1. Completely removed integration with the `sp` package. Functions `gh_to_sp` and `gh_to_spdf` have been removed, and `gh_covering` now works natively with `sf` objects.
+
 ### NEW FEATURES
 
  1. `gh_encode` accepts a vector of `precision` values (the same length as the input coordinates), so different coordinates can be encoded at different zoom levels in a single call. A single `precision` value still applies to all coordinates as before.
