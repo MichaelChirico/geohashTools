@@ -16,7 +16,6 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    sp,
     testthat (>= 3.0.0),
     withr
 Config/testthat/edition: 3

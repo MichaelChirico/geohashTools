@@ -167,9 +167,9 @@ gh_neighbors('w21z74nz')
 
 ## API to other GIS tools in R
 
-`geohashTools` offers several helper functions for interfacing your geohash objects with GIS tools in R, namely `sp` and `sf`. This will facilitate the best part of working with GIS data -- the visualizations!
+`geohashTools` offers several helper functions for interfacing your geohash objects with GIS tools in R, namely `sf`. This will facilitate the best part of working with GIS data -- the visualizations!
 
-Returning to public art locations in Chicago, we can visualize the spatial aggregations carried out above by converting to `sp`, combining with a shapefile of Chicago, and plotting:
+Returning to public art locations in Chicago, we can visualize the spatial aggregations carried out above by converting to `sf`, combining with a shapefile of Chicago, and plotting:
 
 
 ``` r
@@ -196,8 +196,6 @@ library(sf)
 ```
 
 Chicago connoisseurs will recognize the biggest concentration around Lincoln Park, with another concentration along the waterfront near Millenium/Grant Parks.
-
-The process for `sf` is similar; just replace `gh_to_spdf` with `gh_to_sf`.
 
 # See also
 

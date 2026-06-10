@@ -102,18 +102,18 @@ gh_neighbors('w21z74nz')
 
 ## Working with spatial formats
 
-There are several `geohashTools` helper functions for converting geohashes into `sp` and `sf` class objects.
+There are helper functions for converting geohashes into `sf` class objects.
 
-### gh_to_*
+### gh_to_sf
 
-The `gh_to_sp`, `gh_to_spdf` and `gh_to_sf` functions convert geohash or vector of geohashes into spatial objects of `sp` and `sf` class respectively. Consider the previous example with the Singapore Merlion and some random data.
+The `gh_to_sf` function converts a geohash or vector of geohashes into a spatial object of `sf` class. Consider the previous example with the Singapore Merlion.
 ```{r merlion_nbhd, fig.width = 3, fig.height = 3, out.width = '\\textwidth'}
 library(sf)
 merlion_ghs <- gh_neighbors('w21z74')
 merlion_nbhd <- gh_to_sf(merlion_ghs)
 
 # Example plot of geohashes neighbouring w21z74
-plot(merlion_nbhd, col = NA, reset = FALSE, key.pos = NULL)
+plot(st_geometry(merlion_nbhd), col = NA, reset = FALSE, key.pos = NULL)
 text(
   st_coordinates(st_centroid(merlion_nbhd)),
   labels = row.names(merlion_nbhd)
@@ -122,47 +122,53 @@ text(
 
 ### gh_covering
 
-Sometimes we have a set of spatial datapoints that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial points. For this function to work, the spatial object has to be in the [WGS84 (EPSG 4326)](https://epsg.io/4326) coordinate reference system that the geohashes use. 
+Sometimes we have a set of spatial datapoints that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial points. For this function to work, the spatial object has to be in the [WGS84 (EPSG 4326)](https://epsg.io/4326) coordinate reference system that the geohashes use.
 
-Let's use the included `meuse` dataset in the `sp` package which shows point coordinates for metal deposits. The first element in this object shows values for cadmium deposits. 
-```{r meuse, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
+Let's generate some simulated spatial points.
+```{r simulated_points, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 if (!requireNamespace('ggplot2', quietly = TRUE)) {
   install.packages('ggplot2')
 }
 
 library(ggplot2)
 
-data(meuse, package = 'sp')
-meuse_sf = st_as_sf(meuse, coords = c('x', 'y'), crs = 28992L, agr = 'constant')
-meuse_sf <- st_transform(meuse_sf, crs = 4326L)
+set.seed(42L)
+sim_pts = st_as_sf(
+  data.frame(
+    lon = -78.5 + rnorm(20L, sd = 0.1),
+    lat = 35.5 + rnorm(20L, sd = 0.1),
+    val = runif(20L)
+  ),
+  coords = c('lon', 'lat'), crs = 4326L
+)
 
 ggplot() +
-  geom_sf(data = meuse_sf, aes(colour = cadmium)) +
+  geom_sf(data = sim_pts, aes(colour = val)) +
   theme_void()
 ```
-By default, `gh_covering` creates a grid that covers the extent of the bounding box for the spatial object. 
-```{r meuse_covering}
-meuse_gh <- gh_covering(meuse_sf)
-meuse_gh
+By default, `gh_covering` creates a grid that covers the extent of the bounding box for the spatial object.
+```{r sim_covering}
+sim_gh <- gh_covering(sim_pts)
+sim_gh
 ```
 
 We can visualize what this looks like with geohashes overlayed on top.
 
-```{r meuse_covering_plot, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
+```{r sim_covering_plot, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 ggplot() +
-  geom_sf(data = meuse_sf) +
-  geom_sf(data = meuse_gh, fill  = NA) +
-  geom_sf_text(data = meuse_gh, aes(label = rownames(meuse_gh))) +
+  geom_sf(data = sim_pts) +
+  geom_sf(data = sim_gh, fill = NA) +
+  geom_sf_text(data = sim_gh, aes(label = rownames(sim_gh))) +
   theme_void()
 ```
 
-Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only create geohashes for intersecting objects. 
-```{r meuse_minimal, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
-meuse_gh <- gh_covering(meuse_sf, minimal = TRUE)
+Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only create geohashes for intersecting objects.
+```{r sim_minimal, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
+sim_gh <- gh_covering(sim_pts, minimal = TRUE)
 
 ggplot() +
-  geom_sf(data = meuse_sf) +
-  geom_sf(data = meuse_gh, fill  = NA) +
-  geom_sf_text(data = meuse_gh, aes(label = rownames(meuse_gh))) +
+  geom_sf(data = sim_pts) +
+  geom_sf(data = sim_gh, fill = NA) +
+  geom_sf_text(data = sim_gh, aes(label = rownames(sim_gh))) +
   theme_void()
 ```
