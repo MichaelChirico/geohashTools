@@ -113,10 +113,11 @@ merlion_ghs <- gh_neighbors('w21z74')
 merlion_nbhd <- gh_to_sf(merlion_ghs)
 
 # Example plot of geohashes neighbouring w21z74
-plot(st_geometry(merlion_nbhd), col = NA, reset = FALSE, key.pos = NULL)
+plot(st_geometry(merlion_nbhd), col = 'grey95', border = 'grey40', reset = FALSE)
 text(
   st_coordinates(st_centroid(merlion_nbhd)),
-  labels = row.names(merlion_nbhd)
+  labels = row.names(merlion_nbhd),
+  cex = 0.65, font = 2L
 )
 ```
 
