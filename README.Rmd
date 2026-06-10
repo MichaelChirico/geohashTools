@@ -18,10 +18,12 @@ local({
   pkg = 'geohashTools'
   repo = file.path('MichaelChirico', pkg)
   cat(sprintf('
-![logo](logo.png "%1$s")
-[![codecov](https://codecov.io/gh/%2$s/branch/master/graph/badge.svg)](https://app.codecov.io/gh/%2$s?branch=master)
-[![Build Status](https://app.travis-ci.com/%2$s.svg?branch=master)](https://app.travis-ci.com/%2$s)
-[![CRAN status](https://www.r-pkg.org/badges/version/%1$s)](https://cran.r-project.org/package=%1$s)
+  <!-- badges: start -->
+  ![logo](logo.png "%1$s")
+  [![codecov](https://codecov.io/gh/%2$s/branch/master/graph/badge.svg)](https://app.codecov.io/gh/%2$s?branch=master)
+  [![R-CMD-check](https://github.com/%2$s/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/%2$s/actions/workflows/R-CMD-check.yaml)
+  [![CRAN status](https://www.r-pkg.org/badges/version/%1$s)](https://cran.r-project.org/package=%1$s)
+  <!-- badges: end -->
 ', pkg, repo))
 })
 ```
