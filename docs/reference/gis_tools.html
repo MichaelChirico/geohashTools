@@ -122,12 +122,8 @@ and excluded.</p>
 <span class="r-in"><span><span class="va">apia_sf</span> <span class="op">=</span> <span class="fu">gh_to_sf</span><span class="op">(</span><span class="va">apia_nbhd</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all geohashes covering a random sampling within Apia:</span></span></span>
-<span class="r-in"><span><span class="co"># Note: requires sf package for st_sample</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"sf"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">apia_covering</span> <span class="op">=</span> <span class="fu">gh_covering</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_sample.html" class="external-link">st_sample</a></span><span class="op">(</span><span class="va">apia_sf</span>, <span class="fl">10L</span>, type <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">apia_covering</span> <span class="op">=</span> <span class="fu">gh_covering</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_sample.html" class="external-link">st_sample</a></span><span class="op">(</span><span class="va">apia_sf</span>, <span class="fl">10L</span>, type <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>coordinate ranges not computed along great circles; install package lwgeom to get rid of this warning</span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
