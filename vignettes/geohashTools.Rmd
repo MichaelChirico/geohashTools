@@ -124,45 +124,45 @@ text(
 
 Sometimes we have spatial features (like points or polygons) that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial object. For this function to work, the spatial object has to be in the [WGS84 (EPSG 4326)](https://epsg.io/4326) coordinate reference system that the geohashes use.
 
-Let's use the classic North Carolina SIDS dataset included in the `sf` package.
-```{r nc_sids, fig.width = 6, fig.height = 3, out.width = '\\textwidth'}
+Let's use the Olinda census tract dataset included in the `sf` package.
+```{r olinda, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 if (!requireNamespace('ggplot2', quietly = TRUE)) {
   install.packages('ggplot2')
 }
 
 library(ggplot2)
 
-nc <- st_read(system.file('shape/nc.shp', package = 'sf'), quiet = TRUE)
-nc_4326 <- st_transform(nc, crs = 4326L)
+olinda <- st_read(system.file('shape/olinda1.shp', package = 'sf'), quiet = TRUE)
+olinda_4326 <- st_transform(olinda, crs = 4326L)
 
 ggplot() +
-  geom_sf(data = nc_4326, aes(fill = SID74)) +
+  geom_sf(data = olinda_4326, aes(fill = V014)) +
   scale_fill_viridis_c() +
   theme_void()
 ```
-By default, `gh_covering` creates a grid that covers the extent of the bounding box for the spatial object. Here we use `precision = 3L` (cell dimensions roughly 156km x 156km) to cover the state cleanly.
-```{r nc_covering}
-nc_gh <- gh_covering(nc_4326, precision = 3L)
-nc_gh
+By default, `gh_covering` creates a grid that covers the extent of the bounding box for the spatial object. Here we set `precision = 5L` (cell dimensions roughly 4.9km x 4.9km) to cover the municipality cleanly.
+```{r olinda_covering}
+olinda_gh <- gh_covering(olinda_4326, precision = 5L)
+olinda_gh
 ```
 
 We can visualize what this looks like with geohashes overlayed on top.
 
-```{r nc_covering_plot, fig.width = 6, fig.height = 3, out.width = '\\textwidth'}
+```{r olinda_covering_plot, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 ggplot() +
-  geom_sf(data = nc_4326) +
-  geom_sf(data = nc_gh, fill = NA, colour = 'red', linewidth = 0.5) +
-  geom_sf_text(data = nc_gh, aes(label = rownames(nc_gh)), colour = 'blue', size = 4.0) +
+  geom_sf(data = olinda_4326) +
+  geom_sf(data = olinda_gh, fill = NA, colour = 'red', linewidth = 0.5) +
+  geom_sf_text(data = olinda_gh, aes(label = rownames(olinda_gh)), colour = 'blue', size = 4.0) +
   theme_void()
 ```
 
 Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only create geohashes for intersecting objects.
-```{r nc_minimal, fig.width = 6, fig.height = 3, out.width = '\\textwidth'}
-nc_minimal_gh <- gh_covering(nc_4326, precision = 3L, minimal = TRUE)
+```{r olinda_minimal, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
+olinda_minimal_gh <- gh_covering(olinda_4326, precision = 5L, minimal = TRUE)
 
 ggplot() +
-  geom_sf(data = nc_4326) +
-  geom_sf(data = nc_minimal_gh, fill = NA, colour = 'red', linewidth = 0.5) +
-  geom_sf_text(data = nc_minimal_gh, aes(label = rownames(nc_minimal_gh)), colour = 'blue', size = 4.0) +
+  geom_sf(data = olinda_4326) +
+  geom_sf(data = olinda_minimal_gh, fill = NA, colour = 'red', linewidth = 0.5) +
+  geom_sf_text(data = olinda_minimal_gh, aes(label = rownames(olinda_minimal_gh)), colour = 'blue', size = 4.0) +
   theme_void()
 ```
