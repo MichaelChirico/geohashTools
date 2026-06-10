@@ -1,3 +1,4 @@
+#' @export
 gh_encode = function(latitude, longitude, precision = 6L) {
   n = length(latitude)
   np = length(precision)

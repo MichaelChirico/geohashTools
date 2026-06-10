@@ -9,6 +9,7 @@ check_suggested = function(pkg) {
 }
 # nocov end
 
+#' @export
 gh_to_sp = function(geohashes) {
   check_suggested('sp')
   gh = tolower(geohashes)
@@ -28,11 +29,13 @@ gh_to_sp = function(geohashes) {
   }), proj4string = wgs())
 }
 
+#' @export
 gh_to_spdf = function(...) {
   check_suggested('sp')
   UseMethod('gh_to_spdf')
 }
 
+#' @export
 gh_to_spdf.default = function(geohashes, ...) {
   if (anyDuplicated(geohashes) > 0L) {
     idx = which(duplicated(geohashes))
@@ -45,6 +48,7 @@ gh_to_spdf.default = function(geohashes, ...) {
   )
 }
 
+#' @export
 gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   if (is.na(idx <- match(gh_col, names(gh_df))))
     stop('Searched for geohashes at a column named "', gh_col, '", but found nothing.')
@@ -60,6 +64,7 @@ gh_to_spdf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   )
 }
 
+#' @export
 gh_covering = function(SP, precision = 6L, minimal = FALSE) {
   check_suggested('sp')
   if (sf_input <- inherits(SP, 'sf')) {
@@ -94,6 +99,7 @@ gh_covering = function(SP, precision = 6L, minimal = FALSE) {
 }
 
 
+#' @export
 gh_to_sf = function(...) {
   check_suggested('sf')
   sf::st_as_sf(gh_to_spdf(...))

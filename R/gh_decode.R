@@ -1,3 +1,4 @@
+#' @export
 gh_decode = function(geohashes, include_delta = FALSE, coord_loc = 'c') {
   if (is.factor(geohashes)) {
     return(lapply(
