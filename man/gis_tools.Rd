@@ -46,15 +46,13 @@ of geohash (geohash-6, geohash-4, etc.) and is agnostic to potential overlap, th
 and excluded.
 }
 \examples{
+\dontshow{if (requireNamespace("sf", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 # get the neighborhood of this geohash in downtown Apia as an sf object
 downtown = '2jtc5x'
 apia_nbhd = unlist(gh_neighbors(downtown))
 apia_sf = gh_to_sf(apia_nbhd)
 
 # all geohashes covering a random sampling within Apia:
-# Note: requires sf package for st_sample
-if (requireNamespace("sf", quietly = TRUE)) {
-  apia_covering = gh_covering(sf::st_sample(apia_sf, 10L, type = 'random'))
-}
-
+apia_covering = gh_covering(sf::st_sample(apia_sf, 10L, type = 'random'))
+\dontshow{\}) # examplesIf}
 }
