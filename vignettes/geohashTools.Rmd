@@ -150,9 +150,13 @@ We can visualize what this looks like with geohashes overlayed on top.
 
 ```{r olinda_covering_plot, fig.width = 4, fig.height = 4, out.width = '\\textwidth'}
 ggplot() +
-  geom_sf(data = olinda_4326) +
-  geom_sf(data = olinda_gh, fill = NA, colour = 'red', linewidth = 0.5) +
-  geom_sf_text(data = olinda_gh, aes(label = rownames(olinda_gh)), colour = 'blue', size = 4.0) +
+  geom_sf(data = olinda_4326, fill = 'grey90', colour = 'white') +
+  geom_sf(data = olinda_gh, fill = NA, colour = 'grey40', linewidth = 0.5) +
+  geom_sf_text(
+    data = olinda_gh,
+    aes(label = rownames(olinda_gh)),
+    colour = 'black', size = 4.0, fontface = 'bold'
+  ) +
   theme_void()
 ```
 
@@ -161,8 +165,12 @@ Alternatively, using `gh_covering` with the parameter `minimal = TRUE` will only
 olinda_minimal_gh <- gh_covering(olinda_4326, precision = 5L, minimal = TRUE)
 
 ggplot() +
-  geom_sf(data = olinda_4326) +
-  geom_sf(data = olinda_minimal_gh, fill = NA, colour = 'red', linewidth = 0.5) +
-  geom_sf_text(data = olinda_minimal_gh, aes(label = rownames(olinda_minimal_gh)), colour = 'blue', size = 4.0) +
+  geom_sf(data = olinda_4326, fill = 'grey90', colour = 'white') +
+  geom_sf(data = olinda_minimal_gh, fill = NA, colour = 'grey40', linewidth = 0.5) +
+  geom_sf_text(
+    data = olinda_minimal_gh,
+    aes(label = rownames(olinda_minimal_gh)),
+    colour = 'black', size = 4.0, fontface = 'bold'
+  ) +
   theme_void()
 ```
