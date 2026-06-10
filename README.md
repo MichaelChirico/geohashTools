@@ -7,10 +7,12 @@ output: github_document
 # `geohashTools`
 
 
-![logo](logo.png "geohashTools")
-[![codecov](https://codecov.io/gh/MichaelChirico/geohashTools/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MichaelChirico/geohashTools?branch=master)
-[![Build Status](https://app.travis-ci.com/MichaelChirico/geohashTools.svg?branch=master)](https://app.travis-ci.com/MichaelChirico/geohashTools)
-[![CRAN status](https://www.r-pkg.org/badges/version/geohashTools)](https://cran.r-project.org/package=geohashTools)
+  <!-- badges: start -->
+  ![logo](logo.png "geohashTools")
+  [![codecov](https://codecov.io/gh/MichaelChirico/geohashTools/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MichaelChirico/geohashTools?branch=master)
+  [![R-CMD-check](https://github.com/MichaelChirico/geohashTools/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MichaelChirico/geohashTools/actions/workflows/R-CMD-check.yaml)
+  [![CRAN status](https://www.r-pkg.org/badges/version/geohashTools)](https://cran.r-project.org/package=geohashTools)
+  <!-- badges: end -->
 
 This package provides tools for working with [Gustavo](https://github.com/niemeyer) [Niemeyer](https://twitter.com/gniemeyer)'s [geohash](https://en.wikipedia.org/wiki/Geohash) system of nestable, compact global coordinates based on [Z-order curves](https://en.wikipedia.org/wiki/Z-order_curve). The system consists of carving the earth into equally-sized rectangles (when projected into latitude/longitude space) and nesting this process recursively.
 
@@ -21,7 +23,7 @@ Originally, we adapted C++ source from [Hiroaki Kawai](https://github.com/hkwi),
 Encoding is the process of turning latitude/longitude coordinates into geohash strings. For example, Parque Nacional Tayrona in Colombia is located at roughly 11.3113917 degrees of latitude, -74.0779006 degrees of longitude. This can be expressed more compactly as:
 
 
-```r
+``` r
 library(geohashTools)
 gh_encode(11.3113917, -74.0779006)
 ```
@@ -35,7 +37,7 @@ These 6 characters identify this point on the globe to within 1.2 kilometers (ea
 The park is quite large, and this is too precise to cover the park; we can "zoom out" by reducing the precision (which is the number of characters in the output, `6` by default):
 
 
-```r
+``` r
 gh_encode(11.3113917, -74.0779006, precision = 5L)
 ```
 
@@ -56,7 +58,7 @@ provided by the City:
 NB: As of this writing, the Chicago data portal is down, apparently temporarily. However I'd like to submit this package update to CRAN in order to avoid deprecation issues around {rgdal} & co, so please check back on the website for a working version of the code below.
 
 
-```r
+``` r
 ## first, pull the data internally from https://data.cityofchicago.org
 # api_stem = 'https://data.cityofchicago.org/api/views'
 # URL = file.path(api_stem, 'sj6t-9cju/rows.csv?accessType=DOWNLOAD')
@@ -77,7 +79,7 @@ This is pretty impractical _per se_ (where is `dp3wm`?); we'll return to this on
 The reverse of encoding geohashes is of course decoding them -- taking a given geohash string and converting it into global coordinates. For example, the Ethiopian coffee growing region of Yirgacheffe is roughly at `sc54v`:
 
 
-```r
+``` r
 gh_decode('sc54v')
 ```
 
@@ -92,7 +94,7 @@ gh_decode('sc54v')
 It can also be helpful to know just how precisely we've identified these coordinates; the `include_delta` argument gives the cell half-widths in both directions in addition to the cell centroid:
 
 
-```r
+``` r
 gh_decode('sc54v', include_delta = TRUE)
 ```
 
@@ -113,7 +115,7 @@ gh_decode('sc54v', include_delta = TRUE)
 In terms of latitude and longitude, all geohashes with the same precision have the same dimensions (though the physical size of the "rectangle" changes depending on the latitude); as such it's easy to figure out the cell half-widths from the precision alone using `gh_delta`:
 
 
-```r
+``` r
 gh_delta(5L)
 ```
 
@@ -130,7 +132,7 @@ Fret not -- one tool for helping overcome this is the `gh_neighbors` function (`
 For example, the Merlion statue in Singapore is roughly at `w21z74nz`, but this level of precision zooms in a bit too far. The geohash neighborhood thereof can be found with:
 
 
-```r
+``` r
 gh_neighbors('w21z74nz')
 ```
 
@@ -170,7 +172,7 @@ gh_neighbors('w21z74nz')
 Returning to public art locations in Chicago, we can visualize the spatial aggregations carried out above by converting to `sp`, combining with a shapefile of Chicago, and plotting:
 
 
-```r
+``` r
 library(sf)
 
 ## first, pull neighborhood shapefiles from https://data.cityofchicago.org
