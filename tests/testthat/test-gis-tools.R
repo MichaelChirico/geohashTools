@@ -23,6 +23,13 @@ test_that('gh_to_sf works', {
       byrow = TRUE, ncol = 2L
     )
   )
+
+  # duplicate inputs dropped (including mixed-case duplicates)
+  expect_warning(
+    expect_identical(gh_to_sf(c(baku, toupper(baku))), ghSF),
+    'duplicate input geohashes',
+    fixed = TRUE
+  )
 })
 
 test_that('gh_to_sf.data.frame works', {
@@ -37,6 +44,24 @@ test_that('gh_to_sf.data.frame works', {
   expect_s3_class(ghSF, 'sf')
   expect_identical(nrow(ghSF), 9L)
   expect_identical(ghSF$V, DF$V)
+
+  # duplicated inputs
+  expect_warning(
+    expect_identical(gh_to_sf(rbind(DF, DF)), ghSF),
+    'duplicate input geohashes',
+    fixed = TRUE
+  )
+
+  # custom gh_col
+  DF_custom = data.frame(geohash = baku, V = DF$V)
+  expect_s3_class(gh_to_sf(DF_custom, gh_col = 'geohash'), 'sf')
+
+  # missing gh_col
+  expect_error(
+    gh_to_sf(DF_custom),
+    'Searched for geohashes at a column named "gh"',
+    fixed = TRUE
+  )
 })
 
 test_that('gh_covering works', {
@@ -72,6 +97,21 @@ test_that('gh_covering works', {
     c('qx3kzm', 'qx3kzx', 'qx3mp3', 'qx3mpb', 'qx3mpu', 'qx3mpz', 'qx3mr5', 'qx3sbt', 'qx3t06', 'qx3t22')
   )
   expect_identical(nrow(banjarmasin_tight), 10L)
+
+  # sfg input and no-CRS warning
+  pt_sfg = sf::st_point(c(114.605, -3.3346))
+  expect_warning(
+    cov_sfg <- gh_covering(pt_sfg, precision = 5L),
+    'has no CRS defined',
+    fixed = TRUE
+  )
+  expect_s3_class(cov_sfg, 'sf')
+
+  # non-4326 input (e.g. EPSG:3857 Pseudo-Mercator)
+  banjarmasin_3857 = sf::st_transform(banjarmasin, 3857L)
+  cov_3857 = gh_covering(banjarmasin_3857, minimal = TRUE)
+  expect_identical(sf::st_crs(cov_3857), sf::st_crs(3857L))
+  expect_identical(nrow(cov_3857), nrow(banjarmasin_tight))
 
   # errors
   expect_error(gh_covering(4L), 'Object to cover must be sf', fixed = TRUE)

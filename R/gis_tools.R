@@ -61,6 +61,7 @@ gh_to_sf = function(...) {
 #' @rdname gis_tools
 #' @export
 gh_to_sf.default = function(geohashes, ...) {
+  geohashes = tolower(geohashes)
   if (anyDuplicated(geohashes) > 0L) {
     idx = which(duplicated(geohashes))
     warning('Detected ', length(idx), ' duplicate input geohashes; removing')
@@ -75,12 +76,13 @@ gh_to_sf.default = function(geohashes, ...) {
 gh_to_sf.data.frame = function(gh_df, gh_col = 'gh', ...) {
   if (is.na(idx <- match(gh_col, names(gh_df))))
     stop('Searched for geohashes at a column named "', gh_col, '", but found nothing.')
-  gh = gh_df[[idx]]
+  gh = tolower(gh_df[[idx]])
+  gh_df[[idx]] = gh
   if (anyDuplicated(gh) > 0L) {
-    idx = which(duplicated(gh))
-    warning('Detected ', length(idx), ' duplicate input geohashes; removing')
-    gh = gh[-idx]
-    gh_df = gh_df[-idx, , drop = FALSE]
+    idx_dup = which(duplicated(gh))
+    warning('Detected ', length(idx_dup), ' duplicate input geohashes; removing')
+    gh = gh[-idx_dup]
+    gh_df = gh_df[-idx_dup, , drop = FALSE]
   }
   sfc = gh_to_sfc(gh)
   sf::st_sf(gh_df, geometry = sfc, row.names = gh)
@@ -109,14 +111,8 @@ gh_covering = function(x, precision = 6L, minimal = FALSE) {
   ), gh_encode(latitude, longitude, precision))
   cover = gh_to_sf(gh)
   if (minimal) {
-    if (inherits(x_4326, 'sfg')) x_4326 = sf::st_sfc(x_4326, crs = 4326L)
     intersects = sf::st_intersects(cover, x_4326, sparse = FALSE)
-    if (is.matrix(intersects)) {
-      keep = rowSums(intersects) > 0L
-    } else {
-      keep = intersects
-    }
-    cover = cover[keep, ]
+    cover = cover[rowSums(intersects) > 0L, ]
   }
   # Transform back to original CRS if it wasn't 4326
   if (orig_crs != sf::st_crs(4326L)) {

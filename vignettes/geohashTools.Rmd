@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 
-has_ggplot <- requireNamespace("ggplot2", quietly = TRUE)
+has_ggplot <- requireNamespace('ggplot2', quietly = TRUE)
 ```
 
 # What is a Geohash?
@@ -126,7 +126,7 @@ text(
 
 ### gh_covering
 
-Sometimes we have spatial features (like points or polygons) that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial object. For this function to work, the spatial object has to be in the [WGS84 (EPSG 4326)](https://epsg.io/4326) coordinate reference system that the geohashes use.
+Sometimes we have spatial features (like points or polygons) that we want to aggregate or index using geohashes. The `gh_covering` function produces a grid of geohashes that overlap with the spatial object. Thanks to native `sf` integration, `gh_covering` automatically handles coordinate transformations—you can supply an object in any coordinate reference system (such as projected UTM coordinates), and `gh_covering` will transform it internally to generate the grid and transform the resulting geohash cover back to match your original CRS.
 
 Let's use the Olinda census tract dataset included in the `sf` package.
 ```{r}
